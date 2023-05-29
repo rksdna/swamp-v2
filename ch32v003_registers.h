@@ -1,0 +1,1866 @@
+/*
+ * CH32V003 peripheral registers
+ * Copyright (c) 2023 rksdna
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+#ifndef CH32V003_REGISTERS_H
+#define CH32V003_REGISTERS_H
+
+#include "ch32v003_types.h"
+
+#define FLASH_ORIGIN ((u32_t)0x08000000)
+#define FLASH_SIZE ((u32_t)0x00004000)
+
+#define SRAM_ORIGIN ((u32_t)0x20000000)
+#define SRAM_SIZE ((u32_t)0x00000800)
+
+struct ch32v003_pfic
+{
+    volatile u32_t ISR[8];
+    volatile u32_t IPR[8];
+    volatile u32_t ITHRESDR;
+    volatile u32_t RESERVED;
+    volatile u32_t CFGR;
+    volatile u32_t GISR;
+    volatile u8_t VTFIDR[4];
+    u8_t RESERVED0[12];
+    volatile u32_t VTFADDR[4];
+    u8_t RESERVED1[0x90];
+    volatile u32_t IENR[8];
+    u8_t RESERVED2[0x60];
+    volatile u32_t IRER[8];
+    u8_t RESERVED3[0x60];
+    volatile u32_t IPSR[8];
+    u8_t RESERVED4[0x60];
+    volatile u32_t IPRR[8];
+    u8_t RESERVED5[0x60];
+    volatile u32_t IACTR[8];
+    u8_t RESERVED6[0xE0];
+    volatile u8_t IPRIOR[256];
+    u8_t RESERVED7[0x810];
+    volatile u32_t SCTLR;
+};
+
+#define PFIC ((struct ch32v003_pfic*)0xE000E000)
+#define PFIC_KEY1 ((u32_t)0xFA050000)
+#define	PFIC_KEY2 ((u32_t)0xBCAF0000)
+#define	PFIC_KEY3 ((u32_t)0xBEEF0000)
+
+#define PFIC_SCTRL_SYSRESET ((u32_t)0x80000000)
+
+struct ch32v003_stk
+{
+    volatile u32_t CTLR;
+    volatile u32_t SR;
+    volatile u32_t CNT;
+    u32_t RESERVED0;
+    volatile u32_t CMP;
+    u32_t RESERVED1;
+};
+
+#define STK ((struct ch32v003_stk*) 0xE000F000)
+
+#define STK_CTLR_STE ((u32_t)0x00000001)
+#define STK_CTLR_STIE ((u32_t)0x00000002)
+#define STK_CTLR_STCLK ((u32_t)0x00000004)
+#define STK_CTLR_STRE ((u32_t)0x00000008)
+#define STK_CTLR_SWIE ((u32_t)0x80000000)
+
+#define STK_SR_CNTIF ((u32_t)0x00000001)
+
+struct ch32v003_adc
+{
+    volatile u32_t STATR;
+    volatile u32_t CTLR1;
+    volatile u32_t CTLR2;
+    volatile u32_t SAMPTR1;
+    volatile u32_t SAMPTR2;
+    volatile u32_t IOFR1;
+    volatile u32_t IOFR2;
+    volatile u32_t IOFR3;
+    volatile u32_t IOFR4;
+    volatile u32_t WDHTR;
+    volatile u32_t WDLTR;
+    volatile u32_t RSQR1;
+    volatile u32_t RSQR2;
+    volatile u32_t RSQR3;
+    volatile u32_t ISQR;
+    volatile u32_t IDATAR1;
+    volatile u32_t IDATAR2;
+    volatile u32_t IDATAR3;
+    volatile u32_t IDATAR4;
+    volatile u32_t RDATAR;
+    volatile u32_t DLYR;
+};
+
+#define ADC1 ((struct ch32v003_adc*)0x40012400)
+
+#define ADC_STATR_AWD ((u8_t)0x01)
+#define ADC_STATR_EOC ((u8_t)0x02)
+#define ADC_STATR_JEOC ((u8_t)0x04)
+#define ADC_STATR_JSTRT ((u8_t)0x08)
+#define ADC_STATR_STRT ((u8_t)0x10)
+
+#define ADC_CTLR1_AWDCH ((u32_t)0x0000001F)
+#define ADC_CTLR1_AWDCH_0 ((u32_t)0x00000001)
+#define ADC_CTLR1_AWDCH_1 ((u32_t)0x00000002)
+#define ADC_CTLR1_AWDCH_2 ((u32_t)0x00000004)
+#define ADC_CTLR1_AWDCH_3 ((u32_t)0x00000008)
+#define ADC_CTLR1_AWDCH_4 ((u32_t)0x00000010)
+#define ADC_CTLR1_EOCIE ((u32_t)0x00000020)
+#define ADC_CTLR1_AWDIE ((u32_t)0x00000040)
+#define ADC_CTLR1_JEOCIE ((u32_t)0x00000080)
+#define ADC_CTLR1_SCAN ((u32_t)0x00000100)
+#define ADC_CTLR1_AWDSGL ((u32_t)0x00000200)
+#define ADC_CTLR1_JAUTO ((u32_t)0x00000400)
+#define ADC_CTLR1_DISCEN ((u32_t)0x00000800)
+#define ADC_CTLR1_JDISCEN ((u32_t)0x00001000)
+#define ADC_CTLR1_DISCNUM ((u32_t)0x0000E000)
+#define ADC_CTLR1_DISCNUM_0 ((u32_t)0x00002000)
+#define ADC_CTLR1_DISCNUM_1 ((u32_t)0x00004000)
+#define ADC_CTLR1_DISCNUM_2 ((u32_t)0x00008000)
+#define ADC_CTLR1_DUALMOD ((u32_t)0x000F0000)
+#define ADC_CTLR1_DUALMOD_0 ((u32_t)0x00010000)
+#define ADC_CTLR1_DUALMOD_1 ((u32_t)0x00020000)
+#define ADC_CTLR1_DUALMOD_2 ((u32_t)0x00040000)
+#define ADC_CTLR1_DUALMOD_3 ((u32_t)0x00080000)
+#define ADC_CTLR1_JAWDEN ((u32_t)0x00400000)
+#define ADC_CTLR1_AWDEN ((u32_t)0x00800000)
+
+#define ADC_CTLR2_ADON ((u32_t)0x00000001)
+#define ADC_CTLR2_CONT ((u32_t)0x00000002)
+#define ADC_CTLR2_CAL ((u32_t)0x00000004)
+#define ADC_CTLR2_RSTCAL ((u32_t)0x00000008)
+#define ADC_CTLR2_DMA ((u32_t)0x00000100)
+#define ADC_CTLR2_ALIGN ((u32_t)0x00000800)
+#define ADC_CTLR2_JEXTSEL ((u32_t)0x00007000)
+#define ADC_CTLR2_JEXTSEL_0 ((u32_t)0x00001000)
+#define ADC_CTLR2_JEXTSEL_1 ((u32_t)0x00002000)
+#define ADC_CTLR2_JEXTSEL_2 ((u32_t)0x00004000)
+#define ADC_CTLR2_JEXTTRIG ((u32_t)0x00008000)
+#define ADC_CTLR2_EXTSEL ((u32_t)0x000E0000)
+#define ADC_CTLR2_EXTSEL_0 ((u32_t)0x00020000)
+#define ADC_CTLR2_EXTSEL_1 ((u32_t)0x00040000)
+#define ADC_CTLR2_EXTSEL_2 ((u32_t)0x00080000)
+#define ADC_CTLR2_EXTTRIG ((u32_t)0x00100000)
+#define ADC_CTLR2_JSWSTART ((u32_t)0x00200000)
+#define ADC_CTLR2_SWSTART ((u32_t)0x00400000)
+#define ADC_CTLR2_TSVREFE ((u32_t)0x00800000)
+
+#define ADC_SAMPTR1_SMP10 ((u32_t)0x00000007)
+#define ADC_SAMPTR1_SMP10_0 ((u32_t)0x00000001)
+#define ADC_SAMPTR1_SMP10_1 ((u32_t)0x00000002)
+#define ADC_SAMPTR1_SMP10_2 ((u32_t)0x00000004)
+#define ADC_SAMPTR1_SMP11 ((u32_t)0x00000038)
+#define ADC_SAMPTR1_SMP11_0 ((u32_t)0x00000008)
+#define ADC_SAMPTR1_SMP11_1 ((u32_t)0x00000010)
+#define ADC_SAMPTR1_SMP11_2 ((u32_t)0x00000020)
+#define ADC_SAMPTR1_SMP12 ((u32_t)0x000001C0)
+#define ADC_SAMPTR1_SMP12_0 ((u32_t)0x00000040)
+#define ADC_SAMPTR1_SMP12_1 ((u32_t)0x00000080)
+#define ADC_SAMPTR1_SMP12_2 ((u32_t)0x00000100)
+#define ADC_SAMPTR1_SMP13 ((u32_t)0x00000E00)
+#define ADC_SAMPTR1_SMP13_0 ((u32_t)0x00000200)
+#define ADC_SAMPTR1_SMP13_1 ((u32_t)0x00000400)
+#define ADC_SAMPTR1_SMP13_2 ((u32_t)0x00000800)
+#define ADC_SAMPTR1_SMP14 ((u32_t)0x00007000)
+#define ADC_SAMPTR1_SMP14_0 ((u32_t)0x00001000)
+#define ADC_SAMPTR1_SMP14_1 ((u32_t)0x00002000)
+#define ADC_SAMPTR1_SMP14_2 ((u32_t)0x00004000)
+#define ADC_SAMPTR1_SMP15 ((u32_t)0x00038000)
+#define ADC_SAMPTR1_SMP15_0 ((u32_t)0x00008000)
+#define ADC_SAMPTR1_SMP15_1 ((u32_t)0x00010000)
+#define ADC_SAMPTR1_SMP15_2 ((u32_t)0x00020000)
+#define ADC_SAMPTR1_SMP16 ((u32_t)0x001C0000)
+#define ADC_SAMPTR1_SMP16_0 ((u32_t)0x00040000)
+#define ADC_SAMPTR1_SMP16_1 ((u32_t)0x00080000)
+#define ADC_SAMPTR1_SMP16_2 ((u32_t)0x00100000)
+#define ADC_SAMPTR1_SMP17 ((u32_t)0x00E00000)
+#define ADC_SAMPTR1_SMP17_0 ((u32_t)0x00200000)
+#define ADC_SAMPTR1_SMP17_1 ((u32_t)0x00400000)
+#define ADC_SAMPTR1_SMP17_2 ((u32_t)0x00800000)
+
+#define ADC_SAMPTR2_SMP0 ((u32_t)0x00000007)
+#define ADC_SAMPTR2_SMP0_0 ((u32_t)0x00000001)
+#define ADC_SAMPTR2_SMP0_1 ((u32_t)0x00000002)
+#define ADC_SAMPTR2_SMP0_2 ((u32_t)0x00000004)
+#define ADC_SAMPTR2_SMP1 ((u32_t)0x00000038)
+#define ADC_SAMPTR2_SMP1_0 ((u32_t)0x00000008)
+#define ADC_SAMPTR2_SMP1_1 ((u32_t)0x00000010)
+#define ADC_SAMPTR2_SMP1_2 ((u32_t)0x00000020)
+#define ADC_SAMPTR2_SMP2 ((u32_t)0x000001C0)
+#define ADC_SAMPTR2_SMP2_0 ((u32_t)0x00000040)
+#define ADC_SAMPTR2_SMP2_1 ((u32_t)0x00000080)
+#define ADC_SAMPTR2_SMP2_2 ((u32_t)0x00000100)
+#define ADC_SAMPTR2_SMP3 ((u32_t)0x00000E00)
+#define ADC_SAMPTR2_SMP3_0 ((u32_t)0x00000200)
+#define ADC_SAMPTR2_SMP3_1 ((u32_t)0x00000400)
+#define ADC_SAMPTR2_SMP3_2 ((u32_t)0x00000800)
+#define ADC_SAMPTR2_SMP4 ((u32_t)0x00007000)
+#define ADC_SAMPTR2_SMP4_0 ((u32_t)0x00001000)
+#define ADC_SAMPTR2_SMP4_1 ((u32_t)0x00002000)
+#define ADC_SAMPTR2_SMP4_2 ((u32_t)0x00004000)
+#define ADC_SAMPTR2_SMP5 ((u32_t)0x00038000)
+#define ADC_SAMPTR2_SMP5_0 ((u32_t)0x00008000)
+#define ADC_SAMPTR2_SMP5_1 ((u32_t)0x00010000)
+#define ADC_SAMPTR2_SMP5_2 ((u32_t)0x00020000)
+#define ADC_SAMPTR2_SMP6 ((u32_t)0x001C0000)
+#define ADC_SAMPTR2_SMP6_0 ((u32_t)0x00040000)
+#define ADC_SAMPTR2_SMP6_1 ((u32_t)0x00080000)
+#define ADC_SAMPTR2_SMP6_2 ((u32_t)0x00100000)
+#define ADC_SAMPTR2_SMP7 ((u32_t)0x00E00000)
+#define ADC_SAMPTR2_SMP7_0 ((u32_t)0x00200000)
+#define ADC_SAMPTR2_SMP7_1 ((u32_t)0x00400000)
+#define ADC_SAMPTR2_SMP7_2 ((u32_t)0x00800000)
+#define ADC_SAMPTR2_SMP8 ((u32_t)0x07000000)
+#define ADC_SAMPTR2_SMP8_0 ((u32_t)0x01000000)
+#define ADC_SAMPTR2_SMP8_1 ((u32_t)0x02000000)
+#define ADC_SAMPTR2_SMP8_2 ((u32_t)0x04000000)
+#define ADC_SAMPTR2_SMP9 ((u32_t)0x38000000)
+#define ADC_SAMPTR2_SMP9_0 ((u32_t)0x08000000)
+#define ADC_SAMPTR2_SMP9_1 ((u32_t)0x10000000)
+#define ADC_SAMPTR2_SMP9_2 ((u32_t)0x20000000)
+
+#define ADC_IOFR1_JOFFSET1 ((u16_t)0x0FFF)
+
+#define ADC_IOFR2_JOFFSET2 ((u16_t)0x0FFF)
+
+#define ADC_IOFR3_JOFFSET3 ((u16_t)0x0FFF)
+
+#define ADC_IOFR4_JOFFSET4 ((u16_t)0x0FFF)
+
+#define ADC_WDHTR_HT ((u16_t)0x0FFF)
+
+#define ADC_WDLTR _LT ((u16_t)0x0FFF)
+
+#define ADC_RSQR1_SQ13 ((u32_t)0x0000001F)
+#define ADC_RSQR1_SQ13_0 ((u32_t)0x00000001)
+#define ADC_RSQR1_SQ13_1 ((u32_t)0x00000002)
+#define ADC_RSQR1_SQ13_2 ((u32_t)0x00000004)
+#define ADC_RSQR1_SQ13_3 ((u32_t)0x00000008)
+#define ADC_RSQR1_SQ13_4 ((u32_t)0x00000010)
+#define ADC_RSQR1_SQ14 ((u32_t)0x000003E0)
+#define ADC_RSQR1_SQ14_0 ((u32_t)0x00000020)
+#define ADC_RSQR1_SQ14_1 ((u32_t)0x00000040)
+#define ADC_RSQR1_SQ14_2 ((u32_t)0x00000080)
+#define ADC_RSQR1_SQ14_3 ((u32_t)0x00000100)
+#define ADC_RSQR1_SQ14_4 ((u32_t)0x00000200)
+#define ADC_RSQR1_SQ15 ((u32_t)0x00007C00)
+#define ADC_RSQR1_SQ15_0 ((u32_t)0x00000400)
+#define ADC_RSQR1_SQ15_1 ((u32_t)0x00000800)
+#define ADC_RSQR1_SQ15_2 ((u32_t)0x00001000)
+#define ADC_RSQR1_SQ15_3 ((u32_t)0x00002000)
+#define ADC_RSQR1_SQ15_4 ((u32_t)0x00004000)
+#define ADC_RSQR1_SQ16 ((u32_t)0x000F8000)
+#define ADC_RSQR1_SQ16_0 ((u32_t)0x00008000)
+#define ADC_RSQR1_SQ16_1 ((u32_t)0x00010000)
+#define ADC_RSQR1_SQ16_2 ((u32_t)0x00020000)
+#define ADC_RSQR1_SQ16_3 ((u32_t)0x00040000)
+#define ADC_RSQR1_SQ16_4 ((u32_t)0x00080000)
+#define ADC_RSQR1_L ((u32_t)0x00F00000)
+#define ADC_RSQR1_L_0 ((u32_t)0x00100000)
+#define ADC_RSQR1_L_1 ((u32_t)0x00200000)
+#define ADC_RSQR1_L_2 ((u32_t)0x00400000)
+#define ADC_RSQR1_L_3 ((u32_t)0x00800000)
+
+#define ADC_RSQR2_SQ7 ((u32_t)0x0000001F)
+#define ADC_RSQR2_SQ7_0 ((u32_t)0x00000001)
+#define ADC_RSQR2_SQ7_1 ((u32_t)0x00000002)
+#define ADC_RSQR2_SQ7_2 ((u32_t)0x00000004)
+#define ADC_RSQR2_SQ7_3 ((u32_t)0x00000008)
+#define ADC_RSQR2_SQ7_4 ((u32_t)0x00000010)
+#define ADC_RSQR2_SQ8 ((u32_t)0x000003E0)
+#define ADC_RSQR2_SQ8_0 ((u32_t)0x00000020)
+#define ADC_RSQR2_SQ8_1 ((u32_t)0x00000040)
+#define ADC_RSQR2_SQ8_2 ((u32_t)0x00000080)
+#define ADC_RSQR2_SQ8_3 ((u32_t)0x00000100)
+#define ADC_RSQR2_SQ8_4 ((u32_t)0x00000200)
+#define ADC_RSQR2_SQ9 ((u32_t)0x00007C00)
+#define ADC_RSQR2_SQ9_0 ((u32_t)0x00000400)
+#define ADC_RSQR2_SQ9_1 ((u32_t)0x00000800)
+#define ADC_RSQR2_SQ9_2 ((u32_t)0x00001000)
+#define ADC_RSQR2_SQ9_3 ((u32_t)0x00002000)
+#define ADC_RSQR2_SQ9_4 ((u32_t)0x00004000)
+#define ADC_RSQR2_SQ10 ((u32_t)0x000F8000)
+#define ADC_RSQR2_SQ10_0 ((u32_t)0x00008000)
+#define ADC_RSQR2_SQ10_1 ((u32_t)0x00010000)
+#define ADC_RSQR2_SQ10_2 ((u32_t)0x00020000)
+#define ADC_RSQR2_SQ10_3 ((u32_t)0x00040000)
+#define ADC_RSQR2_SQ10_4 ((u32_t)0x00080000)
+#define ADC_RSQR2_SQ11 ((u32_t)0x01F00000)
+#define ADC_RSQR2_SQ11_0 ((u32_t)0x00100000)
+#define ADC_RSQR2_SQ11_1 ((u32_t)0x00200000)
+#define ADC_RSQR2_SQ11_2 ((u32_t)0x00400000)
+#define ADC_RSQR2_SQ11_3 ((u32_t)0x00800000)
+#define ADC_RSQR2_SQ11_4 ((u32_t)0x01000000)
+#define ADC_RSQR2_SQ12 ((u32_t)0x3E000000)
+#define ADC_RSQR2_SQ12_0 ((u32_t)0x02000000)
+#define ADC_RSQR2_SQ12_1 ((u32_t)0x04000000)
+#define ADC_RSQR2_SQ12_2 ((u32_t)0x08000000)
+#define ADC_RSQR2_SQ12_3 ((u32_t)0x10000000)
+#define ADC_RSQR2_SQ12_4 ((u32_t)0x20000000)
+
+#define ADC_RSQR3_SQ1 ((u32_t)0x0000001F)
+#define ADC_RSQR3_SQ1_0 ((u32_t)0x00000001)
+#define ADC_RSQR3_SQ1_1 ((u32_t)0x00000002)
+#define ADC_RSQR3_SQ1_2 ((u32_t)0x00000004)
+#define ADC_RSQR3_SQ1_3 ((u32_t)0x00000008)
+#define ADC_RSQR3_SQ1_4 ((u32_t)0x00000010)
+#define ADC_RSQR3_SQ2 ((u32_t)0x000003E0)
+#define ADC_RSQR3_SQ2_0 ((u32_t)0x00000020)
+#define ADC_RSQR3_SQ2_1 ((u32_t)0x00000040)
+#define ADC_RSQR3_SQ2_2 ((u32_t)0x00000080)
+#define ADC_RSQR3_SQ2_3 ((u32_t)0x00000100)
+#define ADC_RSQR3_SQ2_4 ((u32_t)0x00000200)
+#define ADC_RSQR3_SQ3 ((u32_t)0x00007C00)
+#define ADC_RSQR3_SQ3_0 ((u32_t)0x00000400)
+#define ADC_RSQR3_SQ3_1 ((u32_t)0x00000800)
+#define ADC_RSQR3_SQ3_2 ((u32_t)0x00001000)
+#define ADC_RSQR3_SQ3_3 ((u32_t)0x00002000)
+#define ADC_RSQR3_SQ3_4 ((u32_t)0x00004000)
+#define ADC_RSQR3_SQ4 ((u32_t)0x000F8000)
+#define ADC_RSQR3_SQ4_0 ((u32_t)0x00008000)
+#define ADC_RSQR3_SQ4_1 ((u32_t)0x00010000)
+#define ADC_RSQR3_SQ4_2 ((u32_t)0x00020000)
+#define ADC_RSQR3_SQ4_3 ((u32_t)0x00040000)
+#define ADC_RSQR3_SQ4_4 ((u32_t)0x00080000)
+#define ADC_RSQR3_SQ5 ((u32_t)0x01F00000)
+#define ADC_RSQR3_SQ5_0 ((u32_t)0x00100000)
+#define ADC_RSQR3_SQ5_1 ((u32_t)0x00200000)
+#define ADC_RSQR3_SQ5_2 ((u32_t)0x00400000)
+#define ADC_RSQR3_SQ5_3 ((u32_t)0x00800000)
+#define ADC_RSQR3_SQ5_4 ((u32_t)0x01000000)
+#define ADC_RSQR3_SQ6 ((u32_t)0x3E000000)
+#define ADC_RSQR3_SQ6_0 ((u32_t)0x02000000)
+#define ADC_RSQR3_SQ6_1 ((u32_t)0x04000000)
+#define ADC_RSQR3_SQ6_2 ((u32_t)0x08000000)
+#define ADC_RSQR3_SQ6_3 ((u32_t)0x10000000)
+#define ADC_RSQR3_SQ6_4 ((u32_t)0x20000000)
+
+#define ADC_ISQR_JSQ1 ((u32_t)0x0000001F)
+#define ADC_ISQR_JSQ1_0 ((u32_t)0x00000001)
+#define ADC_ISQR_JSQ1_1 ((u32_t)0x00000002)
+#define ADC_ISQR_JSQ1_2 ((u32_t)0x00000004)
+#define ADC_ISQR_JSQ1_3 ((u32_t)0x00000008)
+#define ADC_ISQR_JSQ1_4 ((u32_t)0x00000010)
+#define ADC_ISQR_JSQ2 ((u32_t)0x000003E0)
+#define ADC_ISQR_JSQ2_0 ((u32_t)0x00000020)
+#define ADC_ISQR_JSQ2_1 ((u32_t)0x00000040)
+#define ADC_ISQR_JSQ2_2 ((u32_t)0x00000080)
+#define ADC_ISQR_JSQ2_3 ((u32_t)0x00000100)
+#define ADC_ISQR_JSQ2_4 ((u32_t)0x00000200)
+#define ADC_ISQR_JSQ3 ((u32_t)0x00007C00)
+#define ADC_ISQR_JSQ3_0 ((u32_t)0x00000400)
+#define ADC_ISQR_JSQ3_1 ((u32_t)0x00000800)
+#define ADC_ISQR_JSQ3_2 ((u32_t)0x00001000)
+#define ADC_ISQR_JSQ3_3 ((u32_t)0x00002000)
+#define ADC_ISQR_JSQ3_4 ((u32_t)0x00004000)
+#define ADC_ISQR_JSQ4 ((u32_t)0x000F8000)
+#define ADC_ISQR_JSQ4_0 ((u32_t)0x00008000)
+#define ADC_ISQR_JSQ4_1 ((u32_t)0x00010000)
+#define ADC_ISQR_JSQ4_2 ((u32_t)0x00020000)
+#define ADC_ISQR_JSQ4_3 ((u32_t)0x00040000)
+#define ADC_ISQR_JSQ4_4 ((u32_t)0x00080000)
+#define ADC_ISQR_JL ((u32_t)0x00300000)
+#define ADC_ISQR_JL_0 ((u32_t)0x00100000)
+#define ADC_ISQR_JL_1 ((u32_t)0x00200000)
+
+#define ADC_IDATAR1_JDATA ((u16_t)0xFFFF)
+
+#define ADC_IDATAR2_JDATA ((u16_t)0xFFFF)
+
+#define ADC_IDATAR3_JDATA ((u16_t)0xFFFF)
+
+#define ADC_IDATAR4_JDATA ((u16_t)0xFFFF)
+
+#define ADC_RDATAR_DATA ((u32_t)0x0000FFFF)
+#define ADC_RDATAR_ADC2DATA ((u32_t)0xFFFF0000)
+
+struct ch32v003_dbgmcu
+{
+    volatile u32_t CFGR0;
+    volatile u32_t CFGR1;
+};
+
+struct ch32v003_dma
+{
+    volatile u32_t INTFR;
+    volatile u32_t INTFCR;
+};
+
+#define DMA1 ((struct ch32v003_dma*)0x40020000)
+
+#define DMA_INTFR_GIF1 ((u32_t)0x00000001)
+#define DMA_INTFR_TCIF1 ((u32_t)0x00000002)
+#define DMA_INTFR_HTIF1 ((u32_t)0x00000004)
+#define DMA_INTFR_TEIF1 ((u32_t)0x00000008)
+#define DMA_INTFR_GIF2 ((u32_t)0x00000010)
+#define DMA_INTFR_TCIF2 ((u32_t)0x00000020)
+#define DMA_INTFR_HTIF2 ((u32_t)0x00000040)
+#define DMA_INTFR_TEIF2 ((u32_t)0x00000080)
+#define DMA_INTFR_GIF3 ((u32_t)0x00000100)
+#define DMA_INTFR_TCIF3 ((u32_t)0x00000200)
+#define DMA_INTFR_HTIF3 ((u32_t)0x00000400)
+#define DMA_INTFR_TEIF3 ((u32_t)0x00000800)
+#define DMA_INTFR_GIF4 ((u32_t)0x00001000)
+#define DMA_INTFR_TCIF4 ((u32_t)0x00002000)
+#define DMA_INTFR_HTIF4 ((u32_t)0x00004000)
+#define DMA_INTFR_TEIF4 ((u32_t)0x00008000)
+#define DMA_INTFR_GIF5 ((u32_t)0x00010000)
+#define DMA_INTFR_TCIF5 ((u32_t)0x00020000)
+#define DMA_INTFR_HTIF5 ((u32_t)0x00040000)
+#define DMA_INTFR_TEIF5 ((u32_t)0x00080000)
+#define DMA_INTFR_GIF6 ((u32_t)0x00100000)
+#define DMA_INTFR_TCIF6 ((u32_t)0x00200000)
+#define DMA_INTFR_HTIF6 ((u32_t)0x00400000)
+#define DMA_INTFR_TEIF6 ((u32_t)0x00800000)
+#define DMA_INTFR_GIF7 ((u32_t)0x01000000)
+#define DMA_INTFR_TCIF7 ((u32_t)0x02000000)
+#define DMA_INTFR_HTIF7 ((u32_t)0x04000000)
+#define DMA_INTFR_TEIF7 ((u32_t)0x08000000)
+
+#define DMA_INTFCR_CGIF1 ((u32_t)0x00000001)
+#define DMA_INTFCR_CTCIF1 ((u32_t)0x00000002)
+#define DMA_INTFCR_CHTIF1 ((u32_t)0x00000004)
+#define DMA_INTFCR_CTEIF1 ((u32_t)0x00000008)
+#define DMA_INTFCR_CGIF2 ((u32_t)0x00000010)
+#define DMA_INTFCR_CTCIF2 ((u32_t)0x00000020)
+#define DMA_INTFCR_CHTIF2 ((u32_t)0x00000040)
+#define DMA_INTFCR_CTEIF2 ((u32_t)0x00000080)
+#define DMA_INTFCR_CGIF3 ((u32_t)0x00000100)
+#define DMA_INTFCR_CTCIF3 ((u32_t)0x00000200)
+#define DMA_INTFCR_CHTIF3 ((u32_t)0x00000400)
+#define DMA_INTFCR_CTEIF3 ((u32_t)0x00000800)
+#define DMA_INTFCR_CGIF4 ((u32_t)0x00001000)
+#define DMA_INTFCR_CTCIF4 ((u32_t)0x00002000)
+#define DMA_INTFCR_CHTIF4 ((u32_t)0x00004000)
+#define DMA_INTFCR_CTEIF4 ((u32_t)0x00008000)
+#define DMA_INTFCR_CGIF5 ((u32_t)0x00010000)
+#define DMA_INTFCR_CTCIF5 ((u32_t)0x00020000)
+#define DMA_INTFCR_CHTIF5 ((u32_t)0x00040000)
+#define DMA_INTFCR_CTEIF5 ((u32_t)0x00080000)
+#define DMA_INTFCR_CGIF6 ((u32_t)0x00100000)
+#define DMA_INTFCR_CTCIF6 ((u32_t)0x00200000)
+#define DMA_INTFCR_CHTIF6 ((u32_t)0x00400000)
+#define DMA_INTFCR_CTEIF6 ((u32_t)0x00800000)
+#define DMA_INTFCR_CGIF7 ((u32_t)0x01000000)
+#define DMA_INTFCR_CTCIF7 ((u32_t)0x02000000)
+#define DMA_INTFCR_CHTIF7 ((u32_t)0x04000000)
+#define DMA_INTFCR_CTEIF7 ((u32_t)0x08000000)
+
+struct ch32v003_dma_channel
+{
+    volatile u32_t CFGR;
+    volatile u32_t CNTR;
+    volatile u32_t PADDR;
+    volatile u32_t MADDR;
+};
+
+#define DMA1_CH1 ((struct ch32v003_dma_channel*)0x40020008)
+#define DMA1_CH2 ((struct ch32v003_dma_channel*)0x4002001C)
+#define DMA1_CH3 ((struct ch32v003_dma_channel*)0x40020030)
+#define DMA1_CH4 ((struct ch32v003_dma_channel*)0x40020044)
+#define DMA1_CH5 ((struct ch32v003_dma_channel*)0x40020058)
+#define DMA1_CH6 ((struct ch32v003_dma_channel*)0x4002006C)
+#define DMA1_CH7 ((struct ch32v003_dma_channel*)0x40020080)
+
+#define DMA_CH_CFGR_EN ((u16_t)0x0001)
+#define DMA_CH_CFGR_TCIE ((u16_t)0x0002)
+#define DMA_CH_CFGR_HTIE ((u16_t)0x0004)
+#define DMA_CH_CFGR_TEIE ((u16_t)0x0008)
+#define DMA_CH_CFGR_DIR ((u16_t)0x0010)
+#define DMA_CH_CFGR_CIRC ((u16_t)0x0020)
+#define DMA_CH_CFGR_PINC ((u16_t)0x0040)
+#define DMA_CH_CFGR_MINC ((u16_t)0x0080)
+#define DMA_CH_CFGR_PSIZE ((u16_t)0x0300)
+#define DMA_CH_CFGR_PSIZE_0 ((u16_t)0x0100)
+#define DMA_CH_CFGR_PSIZE_1 ((u16_t)0x0200)
+#define DMA_CH_CFGR_MSIZE ((u16_t)0x0C00)
+#define DMA_CH_CFGR_MSIZE_0 ((u16_t)0x0400)
+#define DMA_CH_CFGR_MSIZE_1 ((u16_t)0x0800)
+#define DMA_CH_CFGR_PL ((u16_t)0x3000)
+#define DMA_CH_CFGR_PL_0 ((u16_t)0x1000)
+#define DMA_CH_CFGR_PL_1 ((u16_t)0x2000)
+#define DMA_CH_CFGR_MEM2MEM ((u16_t)0x4000)
+
+#define DMA_CH_CNTR_NDT ((u16_t)0xFFFF)
+
+#define DMA_CH_PADDR_PA ((u32_t)0xFFFFFFFF)
+
+#define DMA_CH_MADDR_MA ((u32_t)0xFFFFFFFF)
+
+struct ch32v003_exti
+{
+    volatile u32_t INTENR;
+    volatile u32_t EVENR;
+    volatile u32_t RTENR;
+    volatile u32_t FTENR;
+    volatile u32_t SWIEVR;
+    volatile u32_t INTFR;
+};
+
+#define EXTI ((struct ch32v003_exti*)0x40010400)
+
+#define EXTI_INTENR_MR0 ((u32_t)0x00000001)
+#define EXTI_INTENR_MR1 ((u32_t)0x00000002)
+#define EXTI_INTENR_MR2 ((u32_t)0x00000004)
+#define EXTI_INTENR_MR3 ((u32_t)0x00000008)
+#define EXTI_INTENR_MR4 ((u32_t)0x00000010)
+#define EXTI_INTENR_MR5 ((u32_t)0x00000020)
+#define EXTI_INTENR_MR6 ((u32_t)0x00000040)
+#define EXTI_INTENR_MR7 ((u32_t)0x00000080)
+#define EXTI_INTENR_MR8 ((u32_t)0x00000100)
+#define EXTI_INTENR_MR9 ((u32_t)0x00000200)
+
+#define EXTI_EVENR_MR0 ((u32_t)0x00000001)
+#define EXTI_EVENR_MR1 ((u32_t)0x00000002)
+#define EXTI_EVENR_MR2 ((u32_t)0x00000004)
+#define EXTI_EVENR_MR3 ((u32_t)0x00000008)
+#define EXTI_EVENR_MR4 ((u32_t)0x00000010)
+#define EXTI_EVENR_MR5 ((u32_t)0x00000020)
+#define EXTI_EVENR_MR6 ((u32_t)0x00000040)
+#define EXTI_EVENR_MR7 ((u32_t)0x00000080)
+#define EXTI_EVENR_MR8 ((u32_t)0x00000100)
+#define EXTI_EVENR_MR9 ((u32_t)0x00000200)
+
+#define EXTI_RTENR_TR0 ((u32_t)0x00000001)
+#define EXTI_RTENR_TR1 ((u32_t)0x00000002)
+#define EXTI_RTENR_TR2 ((u32_t)0x00000004)
+#define EXTI_RTENR_TR3 ((u32_t)0x00000008)
+#define EXTI_RTENR_TR4 ((u32_t)0x00000010)
+#define EXTI_RTENR_TR5 ((u32_t)0x00000020)
+#define EXTI_RTENR_TR6 ((u32_t)0x00000040)
+#define EXTI_RTENR_TR7 ((u32_t)0x00000080)
+#define EXTI_RTENR_TR8 ((u32_t)0x00000100)
+#define EXTI_RTENR_TR9 ((u32_t)0x00000200)
+
+#define EXTI_FTENR_TR0 ((u32_t)0x00000001)
+#define EXTI_FTENR_TR1 ((u32_t)0x00000002)
+#define EXTI_FTENR_TR2 ((u32_t)0x00000004)
+#define EXTI_FTENR_TR3 ((u32_t)0x00000008)
+#define EXTI_FTENR_TR4 ((u32_t)0x00000010)
+#define EXTI_FTENR_TR5 ((u32_t)0x00000020)
+#define EXTI_FTENR_TR6 ((u32_t)0x00000040)
+#define EXTI_FTENR_TR7 ((u32_t)0x00000080)
+#define EXTI_FTENR_TR8 ((u32_t)0x00000100)
+#define EXTI_FTENR_TR9 ((u32_t)0x00000200)
+
+#define EXTI_SWIEVR_SWIEVR0 ((u32_t)0x00000001)
+#define EXTI_SWIEVR_SWIEVR1 ((u32_t)0x00000002)
+#define EXTI_SWIEVR_SWIEVR2 ((u32_t)0x00000004)
+#define EXTI_SWIEVR_SWIEVR3 ((u32_t)0x00000008)
+#define EXTI_SWIEVR_SWIEVR4 ((u32_t)0x00000010)
+#define EXTI_SWIEVR_SWIEVR5 ((u32_t)0x00000020)
+#define EXTI_SWIEVR_SWIEVR6 ((u32_t)0x00000040)
+#define EXTI_SWIEVR_SWIEVR7 ((u32_t)0x00000080)
+#define EXTI_SWIEVR_SWIEVR8 ((u32_t)0x00000100)
+#define EXTI_SWIEVR_SWIEVR9 ((u32_t)0x00000200)
+
+#define EXTI_INTF_INTF0 ((u32_t)0x00000001)
+#define EXTI_INTF_INTF1 ((u32_t)0x00000002)
+#define EXTI_INTF_INTF2 ((u32_t)0x00000004)
+#define EXTI_INTF_INTF3 ((u32_t)0x00000008)
+#define EXTI_INTF_INTF4 ((u32_t)0x00000010)
+#define EXTI_INTF_INTF5 ((u32_t)0x00000020)
+#define EXTI_INTF_INTF6 ((u32_t)0x00000040)
+#define EXTI_INTF_INTF7 ((u32_t)0x00000080)
+#define EXTI_INTF_INTF8 ((u32_t)0x00000100)
+#define EXTI_INTF_INTF9 ((u32_t)0x00000200)
+
+struct ch32v003_flash
+{
+    volatile u32_t ACTLR;
+    volatile u32_t KEYR;
+    volatile u32_t OBKEYR;
+    volatile u32_t STATR;
+    volatile u32_t CTLR;
+    volatile u32_t ADDR;
+    volatile u32_t RESERVED;
+    volatile u32_t OBR;
+    volatile u32_t WPR;
+    volatile u32_t MODEKEYR;
+    volatile u32_t BOOT_MODEKEYR;
+};
+
+#define FLASH ((struct ch32v003_flash*)0x40022000)
+
+#define FLASH_ACTLR_LATENCY ((u8_t)0x03)
+#define FLASH_ACTLR_LATENCY_0 ((u8_t)0x00)
+#define FLASH_ACTLR_LATENCY_1 ((u8_t)0x01)
+#define FLASH_ACTLR_LATENCY_2 ((u8_t)0x02)
+
+#define FLASH_KEYR_FKEYR ((u32_t)0xFFFFFFFF)
+
+#define FLASH_OBKEYR_OBKEYR ((u32_t)0xFFFFFFFF)
+
+#define FLASH_STATR_BSY ((u8_t)0x01)
+#define FLASH_STATR_WRPRTERR ((u8_t)0x10)
+#define FLASH_STATR_EOP ((u8_t)0x20)
+
+#define FLASH_CTLR_PG ((u16_t)0x0001)
+#define FLASH_CTLR_PER ((u16_t)0x0002)
+#define FLASH_CTLR_MER ((u16_t)0x0004)
+#define FLASH_CTLR_OPTPG ((u16_t)0x0010)
+#define FLASH_CTLR_OPTER ((u16_t)0x0020)
+#define FLASH_CTLR_STRT ((u16_t)0x0040)
+#define FLASH_CTLR_LOCK ((u16_t)0x0080)
+#define FLASH_CTLR_OPTWRE ((u16_t)0x0200)
+#define FLASH_CTLR_ERRIE ((u16_t)0x0400)
+#define FLASH_CTLR_EOPIE ((u16_t)0x1000)
+#define FLASH_CTLR_PAGE_PG ((u16_t)0x00010000)
+#define FLASH_CTLR_PAGE_ER ((u16_t)0x00020000)
+#define FLASH_CTLR_BUF_LOAD ((u16_t)0x00040000)
+#define FLASH_CTLR_BUF_RST ((u16_t)0x00080000)
+
+#define FLASH_ADDR_FAR ((u32_t)0xFFFFFFFF)
+
+#define FLASH_OBR_OPTERR ((u16_t)0x0001)
+#define FLASH_OBR_RDPRT ((u16_t)0x0002)
+
+#define FLASH_OBR_USER ((u16_t)0x03FC)
+#define FLASH_OBR_WDG_SW ((u16_t)0x0004)
+#define FLASH_OBR_NRST_STOP ((u16_t)0x0008)
+#define FLASH_OBR_NRST_STDBY ((u16_t)0x0010)
+#define FLASH_OBR_RST_MODE ((u16_t)0x0060)
+
+#define FLASH_WPR_WRP ((u32_t)0xFFFFFFFF)
+
+struct ch32v003_ob
+{
+    volatile u16_t RDPR;
+    volatile u16_t USER;
+    volatile u16_t DATA0;
+    volatile u16_t DATA1;
+    volatile u16_t WRPR0;
+    volatile u16_t WRPR1;
+};
+
+#define OB ((struct ch32v003_ob*)0x1FFFF800)
+
+#define OB_RDPR_RDPR ((u32_t)0x000000FF)
+#define OB_RDPR_NRDPR ((u32_t)0x0000FF00)
+
+#define OB_USER_USER ((u32_t)0x00FF0000)
+#define OB_USER_nUSER ((u32_t)0xFF000000)
+
+#define OB_DATA0_DATA0 ((u32_t)0x000000FF)
+#define OB_DATA0_NDATA0 ((u32_t)0x0000FF00)
+
+#define OB_DATA1_DATA1 ((u32_t)0x00FF0000)
+#define OB_DATA1_NDATA1 ((u32_t)0xFF000000)
+
+#define OB_WRPR0_WRPR0 ((u32_t)0x000000FF)
+#define OB_WRPR0_NWRPR0 ((u32_t)0x0000FF00)
+
+#define OB_WRPR1_WRPR1 ((u32_t)0x00FF0000)
+#define OB_WRPR1_NWRPR1 ((u32_t)0xFF000000)
+
+struct ch32v003_gpio
+{
+    volatile u32_t CFGLR;
+    volatile u32_t CFGHR;
+    volatile u32_t INDR;
+    volatile u32_t OUTDR;
+    volatile u32_t BSHR;
+    volatile u32_t BCR;
+    volatile u32_t LCKR;
+};
+
+#define GPIOA ((struct ch32v003_gpio*)0x40010800)
+#define GPIOC ((struct ch32v003_gpio*)0x40011000)
+#define GPIOD ((struct ch32v003_gpio*)0x40011400)
+
+#define GPIO_CFGLR_MODE ((u32_t)0x33333333)
+#define GPIO_CFGLR_MODE0 ((u32_t)0x00000003)
+#define GPIO_CFGLR_MODE0_0 ((u32_t)0x00000001)
+#define GPIO_CFGLR_MODE0_1 ((u32_t)0x00000002)
+#define GPIO_CFGLR_MODE1 ((u32_t)0x00000030)
+#define GPIO_CFGLR_MODE1_0 ((u32_t)0x00000010)
+#define GPIO_CFGLR_MODE1_1 ((u32_t)0x00000020)
+#define GPIO_CFGLR_MODE2 ((u32_t)0x00000300)
+#define GPIO_CFGLR_MODE2_0 ((u32_t)0x00000100)
+#define GPIO_CFGLR_MODE2_1 ((u32_t)0x00000200)
+#define GPIO_CFGLR_MODE3 ((u32_t)0x00003000)
+#define GPIO_CFGLR_MODE3_0 ((u32_t)0x00001000)
+#define GPIO_CFGLR_MODE3_1 ((u32_t)0x00002000)
+#define GPIO_CFGLR_MODE4 ((u32_t)0x00030000)
+#define GPIO_CFGLR_MODE4_0 ((u32_t)0x00010000)
+#define GPIO_CFGLR_MODE4_1 ((u32_t)0x00020000)
+#define GPIO_CFGLR_MODE5 ((u32_t)0x00300000)
+#define GPIO_CFGLR_MODE5_0 ((u32_t)0x00100000)
+#define GPIO_CFGLR_MODE5_1 ((u32_t)0x00200000)
+#define GPIO_CFGLR_MODE6 ((u32_t)0x03000000)
+#define GPIO_CFGLR_MODE6_0 ((u32_t)0x01000000)
+#define GPIO_CFGLR_MODE6_1 ((u32_t)0x02000000)
+#define GPIO_CFGLR_MODE7 ((u32_t)0x30000000)
+#define GPIO_CFGLR_MODE7_0 ((u32_t)0x10000000)
+#define GPIO_CFGLR_MODE7_1 ((u32_t)0x20000000)
+#define GPIO_CFGLR_CNF ((u32_t)0xCCCCCCCC)
+#define GPIO_CFGLR_CNF0 ((u32_t)0x0000000C)
+#define GPIO_CFGLR_CNF0_0 ((u32_t)0x00000004)
+#define GPIO_CFGLR_CNF0_1 ((u32_t)0x00000008)
+#define GPIO_CFGLR_CNF1 ((u32_t)0x000000C0)
+#define GPIO_CFGLR_CNF1_0 ((u32_t)0x00000040)
+#define GPIO_CFGLR_CNF1_1 ((u32_t)0x00000080)
+#define GPIO_CFGLR_CNF2 ((u32_t)0x00000C00)
+#define GPIO_CFGLR_CNF2_0 ((u32_t)0x00000400)
+#define GPIO_CFGLR_CNF2_1 ((u32_t)0x00000800)
+#define GPIO_CFGLR_CNF3 ((u32_t)0x0000C000)
+#define GPIO_CFGLR_CNF3_0 ((u32_t)0x00004000)
+#define GPIO_CFGLR_CNF3_1 ((u32_t)0x00008000)
+#define GPIO_CFGLR_CNF4 ((u32_t)0x000C0000)
+#define GPIO_CFGLR_CNF4_0 ((u32_t)0x00040000)
+#define GPIO_CFGLR_CNF4_1 ((u32_t)0x00080000)
+#define GPIO_CFGLR_CNF5 ((u32_t)0x00C00000)
+#define GPIO_CFGLR_CNF5_0 ((u32_t)0x00400000)
+#define GPIO_CFGLR_CNF5_1 ((u32_t)0x00800000)
+#define GPIO_CFGLR_CNF6 ((u32_t)0x0C000000)
+#define GPIO_CFGLR_CNF6_0 ((u32_t)0x04000000)
+#define GPIO_CFGLR_CNF6_1 ((u32_t)0x08000000)
+#define GPIO_CFGLR_CNF7 ((u32_t)0xC0000000)
+#define GPIO_CFGLR_CNF7_0 ((u32_t)0x40000000)
+#define GPIO_CFGLR_CNF7_1 ((u32_t)0x80000000)
+
+#define GPIO_CFGLR_GPI_AN(pin) ((u32_t)0x00000000 << (4 *(pin)))
+#define GPIO_CFGLR_GPI_FL(pin) ((u32_t)0x00000004 << (4 *(pin)))
+#define GPIO_CFGLR_GPI_PU(pin) ((u32_t)0x00000008 << (4 *(pin)))
+#define GPIO_CFGLR_GPO_PP(pin) ((u32_t)0x00000001 << (4 *(pin)))
+#define GPIO_CFGLR_GPO_PP_S(pin) ((u32_t)0x00000002 << (4 *(pin)))
+#define GPIO_CFGLR_GPO_PP_F(pin) ((u32_t)0x00000003 << (4 *(pin)))
+#define GPIO_CFGLR_GPO_OD(pin) ((u32_t)0x00000005 << (4 *(pin)))
+#define GPIO_CFGLR_GPO_OD_S(pin) ((u32_t)0x00000006 << (4 *(pin)))
+#define GPIO_CFGLR_GPO_OD_F(pin) ((u32_t)0x00000007 << (4 *(pin)))
+#define GPIO_CFGLR_AFO_PP(pin) ((u32_t)0x00000009 << (4 *(pin)))
+#define GPIO_CFGLR_AFO_PP_S(pin) ((u32_t)0x0000000A << (4 *(pin)))
+#define GPIO_CFGLR_AFO_PP_F(pin) ((u32_t)0x0000000B << (4 *(pin)))
+#define GPIO_CFGLR_AFO_OD(pin) ((u32_t)0x0000000D << (4 *(pin)))
+#define GPIO_CFGLR_AFO_OD_S(pin) ((u32_t)0x0000000E << (4 *(pin)))
+#define GPIO_CFGLR_AFO_OD_F(pin) ((u32_t)0x0000000F << (4 *(pin)))
+
+#define GPIO_CFGHR_MODE ((u32_t)0x33333333)
+#define GPIO_CFGHR_MODE8 ((u32_t)0x00000003)
+#define GPIO_CFGHR_MODE8_0 ((u32_t)0x00000001)
+#define GPIO_CFGHR_MODE8_1 ((u32_t)0x00000002)
+#define GPIO_CFGHR_MODE9 ((u32_t)0x00000030)
+#define GPIO_CFGHR_MODE9_0 ((u32_t)0x00000010)
+#define GPIO_CFGHR_MODE9_1 ((u32_t)0x00000020)
+#define GPIO_CFGHR_MODE10 ((u32_t)0x00000300)
+#define GPIO_CFGHR_MODE10_0 ((u32_t)0x00000100)
+#define GPIO_CFGHR_MODE10_1 ((u32_t)0x00000200)
+#define GPIO_CFGHR_MODE11 ((u32_t)0x00003000)
+#define GPIO_CFGHR_MODE11_0 ((u32_t)0x00001000)
+#define GPIO_CFGHR_MODE11_1 ((u32_t)0x00002000)
+#define GPIO_CFGHR_MODE12 ((u32_t)0x00030000)
+#define GPIO_CFGHR_MODE12_0 ((u32_t)0x00010000)
+#define GPIO_CFGHR_MODE12_1 ((u32_t)0x00020000)
+#define GPIO_CFGHR_MODE13 ((u32_t)0x00300000)
+#define GPIO_CFGHR_MODE13_0 ((u32_t)0x00100000)
+#define GPIO_CFGHR_MODE13_1 ((u32_t)0x00200000)
+#define GPIO_CFGHR_MODE14 ((u32_t)0x03000000)
+#define GPIO_CFGHR_MODE14_0 ((u32_t)0x01000000)
+#define GPIO_CFGHR_MODE14_1 ((u32_t)0x02000000)
+#define GPIO_CFGHR_MODE15 ((u32_t)0x30000000)
+#define GPIO_CFGHR_MODE15_0 ((u32_t)0x10000000)
+#define GPIO_CFGHR_MODE15_1 ((u32_t)0x20000000)
+#define GPIO_CFGHR_CNF ((u32_t)0xCCCCCCCC)
+#define GPIO_CFGHR_CNF8 ((u32_t)0x0000000C)
+#define GPIO_CFGHR_CNF8_0 ((u32_t)0x00000004)
+#define GPIO_CFGHR_CNF8_1 ((u32_t)0x00000008)
+#define GPIO_CFGHR_CNF9 ((u32_t)0x000000C0)
+#define GPIO_CFGHR_CNF9_0 ((u32_t)0x00000040)
+#define GPIO_CFGHR_CNF9_1 ((u32_t)0x00000080)
+#define GPIO_CFGHR_CNF10 ((u32_t)0x00000C00)
+#define GPIO_CFGHR_CNF10_0 ((u32_t)0x00000400)
+#define GPIO_CFGHR_CNF10_1 ((u32_t)0x00000800)
+#define GPIO_CFGHR_CNF11 ((u32_t)0x0000C000)
+#define GPIO_CFGHR_CNF11_0 ((u32_t)0x00004000)
+#define GPIO_CFGHR_CNF11_1 ((u32_t)0x00008000)
+#define GPIO_CFGHR_CNF12 ((u32_t)0x000C0000)
+#define GPIO_CFGHR_CNF12_0 ((u32_t)0x00040000)
+#define GPIO_CFGHR_CNF12_1 ((u32_t)0x00080000)
+#define GPIO_CFGHR_CNF13 ((u32_t)0x00C00000)
+#define GPIO_CFGHR_CNF13_0 ((u32_t)0x00400000)
+#define GPIO_CFGHR_CNF13_1 ((u32_t)0x00800000)
+#define GPIO_CFGHR_CNF14 ((u32_t)0x0C000000)
+#define GPIO_CFGHR_CNF14_0 ((u32_t)0x04000000)
+#define GPIO_CFGHR_CNF14_1 ((u32_t)0x08000000)
+#define GPIO_CFGHR_CNF15 ((u32_t)0xC0000000)
+#define GPIO_CFGHR_CNF15_0 ((u32_t)0x40000000)
+#define GPIO_CFGHR_CNF15_1 ((u32_t)0x80000000)
+
+#define GPIO_CFGHR_GPI_AN(pin) ((u32_t)0x00000000 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPI_FL(pin) ((u32_t)0x00000004 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPI_PU(pin) ((u32_t)0x00000008 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPO_PP(pin) ((u32_t)0x00000001 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPO_PP_S(pin) ((u32_t)0x00000002 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPO_PP_F(pin) ((u32_t)0x00000003 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPO_OD(pin) ((u32_t)0x00000005 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPO_OD_S(pin) ((u32_t)0x00000006 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_GPO_OD_F(pin) ((u32_t)0x00000007 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_AFO_PP(pin) ((u32_t)0x00000009 << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_AFO_PP_S(pin) ((u32_t)0x0000000A << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_AFO_PP_F(pin) ((u32_t)0x0000000B << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_AFO_OD(pin) ((u32_t)0x0000000D << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_AFO_OD_S(pin) ((u32_t)0x0000000E << (4 * ((pin) - 8)))
+#define GPIO_CFGHR_AFO_OD_F(pin) ((u32_t)0x0000000F << (4 * ((pin) - 8)))
+
+#define GPIO_INDR_IDR0 ((u16_t)0x0001)
+#define GPIO_INDR_IDR1 ((u16_t)0x0002)
+#define GPIO_INDR_IDR2 ((u16_t)0x0004)
+#define GPIO_INDR_IDR3 ((u16_t)0x0008)
+#define GPIO_INDR_IDR4 ((u16_t)0x0010)
+#define GPIO_INDR_IDR5 ((u16_t)0x0020)
+#define GPIO_INDR_IDR6 ((u16_t)0x0040)
+#define GPIO_INDR_IDR7 ((u16_t)0x0080)
+#define GPIO_INDR_IDR8 ((u16_t)0x0100)
+#define GPIO_INDR_IDR9 ((u16_t)0x0200)
+#define GPIO_INDR_IDR10 ((u16_t)0x0400)
+#define GPIO_INDR_IDR11 ((u16_t)0x0800)
+#define GPIO_INDR_IDR12 ((u16_t)0x1000)
+#define GPIO_INDR_IDR13 ((u16_t)0x2000)
+#define GPIO_INDR_IDR14 ((u16_t)0x4000)
+#define GPIO_INDR_IDR15 ((u16_t)0x8000)
+
+#define GPIO_OUTDR_ODR0 ((u16_t)0x0001)
+#define GPIO_OUTDR_ODR1 ((u16_t)0x0002)
+#define GPIO_OUTDR_ODR2 ((u16_t)0x0004)
+#define GPIO_OUTDR_ODR3 ((u16_t)0x0008)
+#define GPIO_OUTDR_ODR4 ((u16_t)0x0010)
+#define GPIO_OUTDR_ODR5 ((u16_t)0x0020)
+#define GPIO_OUTDR_ODR6 ((u16_t)0x0040)
+#define GPIO_OUTDR_ODR7 ((u16_t)0x0080)
+#define GPIO_OUTDR_ODR8 ((u16_t)0x0100)
+#define GPIO_OUTDR_ODR9 ((u16_t)0x0200)
+#define GPIO_OUTDR_ODR10 ((u16_t)0x0400)
+#define GPIO_OUTDR_ODR11 ((u16_t)0x0800)
+#define GPIO_OUTDR_ODR12 ((u16_t)0x1000)
+#define GPIO_OUTDR_ODR13 ((u16_t)0x2000)
+#define GPIO_OUTDR_ODR14 ((u16_t)0x4000)
+#define GPIO_OUTDR_ODR15 ((u16_t)0x8000)
+
+#define GPIO_BSHR_BS0 ((u32_t)0x00000001)
+#define GPIO_BSHR_BS1 ((u32_t)0x00000002)
+#define GPIO_BSHR_BS2 ((u32_t)0x00000004)
+#define GPIO_BSHR_BS3 ((u32_t)0x00000008)
+#define GPIO_BSHR_BS4 ((u32_t)0x00000010)
+#define GPIO_BSHR_BS5 ((u32_t)0x00000020)
+#define GPIO_BSHR_BS6 ((u32_t)0x00000040)
+#define GPIO_BSHR_BS7 ((u32_t)0x00000080)
+#define GPIO_BSHR_BS8 ((u32_t)0x00000100)
+#define GPIO_BSHR_BS9 ((u32_t)0x00000200)
+#define GPIO_BSHR_BS10 ((u32_t)0x00000400)
+#define GPIO_BSHR_BS11 ((u32_t)0x00000800)
+#define GPIO_BSHR_BS12 ((u32_t)0x00001000)
+#define GPIO_BSHR_BS13 ((u32_t)0x00002000)
+#define GPIO_BSHR_BS14 ((u32_t)0x00004000)
+#define GPIO_BSHR_BS15 ((u32_t)0x00008000)
+
+#define GPIO_BSHR_BR0 ((u32_t)0x00010000)
+#define GPIO_BSHR_BR1 ((u32_t)0x00020000)
+#define GPIO_BSHR_BR2 ((u32_t)0x00040000)
+#define GPIO_BSHR_BR3 ((u32_t)0x00080000)
+#define GPIO_BSHR_BR4 ((u32_t)0x00100000)
+#define GPIO_BSHR_BR5 ((u32_t)0x00200000)
+#define GPIO_BSHR_BR6 ((u32_t)0x00400000)
+#define GPIO_BSHR_BR7 ((u32_t)0x00800000)
+#define GPIO_BSHR_BR8 ((u32_t)0x01000000)
+#define GPIO_BSHR_BR9 ((u32_t)0x02000000)
+#define GPIO_BSHR_BR10 ((u32_t)0x04000000)
+#define GPIO_BSHR_BR11 ((u32_t)0x08000000)
+#define GPIO_BSHR_BR12 ((u32_t)0x10000000)
+#define GPIO_BSHR_BR13 ((u32_t)0x20000000)
+#define GPIO_BSHR_BR14 ((u32_t)0x40000000)
+#define GPIO_BSHR_BR15 ((u32_t)0x80000000)
+
+#define GPIO_BCR_BR0 ((u16_t)0x0001)
+#define GPIO_BCR_BR1 ((u16_t)0x0002)
+#define GPIO_BCR_BR2 ((u16_t)0x0004)
+#define GPIO_BCR_BR3 ((u16_t)0x0008)
+#define GPIO_BCR_BR4 ((u16_t)0x0010)
+#define GPIO_BCR_BR5 ((u16_t)0x0020)
+#define GPIO_BCR_BR6 ((u16_t)0x0040)
+#define GPIO_BCR_BR7 ((u16_t)0x0080)
+#define GPIO_BCR_BR8 ((u16_t)0x0100)
+#define GPIO_BCR_BR9 ((u16_t)0x0200)
+#define GPIO_BCR_BR10 ((u16_t)0x0400)
+#define GPIO_BCR_BR11 ((u16_t)0x0800)
+#define GPIO_BCR_BR12 ((u16_t)0x1000)
+#define GPIO_BCR_BR13 ((u16_t)0x2000)
+#define GPIO_BCR_BR14 ((u16_t)0x4000)
+#define GPIO_BCR_BR15 ((u16_t)0x8000)
+
+#define GPIO_LCK0 ((u32_t)0x00000001)
+#define GPIO_LCK1 ((u32_t)0x00000002)
+#define GPIO_LCK2 ((u32_t)0x00000004)
+#define GPIO_LCK3 ((u32_t)0x00000008)
+#define GPIO_LCK4 ((u32_t)0x00000010)
+#define GPIO_LCK5 ((u32_t)0x00000020)
+#define GPIO_LCK6 ((u32_t)0x00000040)
+#define GPIO_LCK7 ((u32_t)0x00000080)
+#define GPIO_LCK8 ((u32_t)0x00000100)
+#define GPIO_LCK9 ((u32_t)0x00000200)
+#define GPIO_LCK10 ((u32_t)0x00000400)
+#define GPIO_LCK11 ((u32_t)0x00000800)
+#define GPIO_LCK12 ((u32_t)0x00001000)
+#define GPIO_LCK13 ((u32_t)0x00002000)
+#define GPIO_LCK14 ((u32_t)0x00004000)
+#define GPIO_LCK15 ((u32_t)0x00008000)
+#define GPIO_LCKK ((u32_t)0x00010000)
+
+struct ch32v003_afio
+{
+    u32_t RESERVED0;
+    volatile u32_t PCFR1;
+    volatile u32_t EXTICR;
+};
+
+#define AFIO ((struct ch32v003_afio*)0x40010000)
+
+#define AFIO_PCFR1_SPI1_REMAP ((u32_t)0x00000001)
+#define AFIO_PCFR1_I2C1_REMAP ((u32_t)0x00000002)
+#define AFIO_PCFR1_USART1_REMAP ((u32_t)0x00000004)
+#define AFIO_PCFR1_USART2_REMAP ((u32_t)0x00000008)
+#define AFIO_PCFR1_USART3_REMAP ((u32_t)0x00000030)
+#define AFIO_PCFR1_USART3_REMAP_0 ((u32_t)0x00000010)
+#define AFIO_PCFR1_USART3_REMAP_1 ((u32_t)0x00000020)
+#define AFIO_PCFR1_USART3_REMAP_NOREMAP ((u32_t)0x00000000)
+#define AFIO_PCFR1_USART3_REMAP_PARTIALREMAP ((u32_t)0x00000010)
+#define AFIO_PCFR1_USART3_REMAP_FULLREMAP ((u32_t)0x00000030)
+#define AFIO_PCFR1_TIM1_REMAP ((u32_t)0x000000C0)
+#define AFIO_PCFR1_TIM1_REMAP_0 ((u32_t)0x00000040)
+#define AFIO_PCFR1_TIM1_REMAP_1 ((u32_t)0x00000080)
+#define AFIO_PCFR1_TIM1_REMAP_NOREMAP ((u32_t)0x00000000)
+#define AFIO_PCFR1_TIM1_REMAP_PARTIALREMAP ((u32_t)0x00000040)
+#define AFIO_PCFR1_TIM1_REMAP_FULLREMAP ((u32_t)0x000000C0)
+#define AFIO_PCFR1_TIM2_REMAP ((u32_t)0x00000300)
+#define AFIO_PCFR1_TIM2_REMAP_0 ((u32_t)0x00000100)
+#define AFIO_PCFR1_TIM2_REMAP_1 ((u32_t)0x00000200)
+#define AFIO_PCFR1_TIM2_REMAP_NOREMAP ((u32_t)0x00000000)
+#define AFIO_PCFR1_TIM2_REMAP_PARTIALREMAP1 ((u32_t)0x00000100)
+#define AFIO_PCFR1_TIM2_REMAP_PARTIALREMAP2 ((u32_t)0x00000200)
+#define AFIO_PCFR1_TIM2_REMAP_FULLREMAP ((u32_t)0x00000300)
+#define AFIO_PCFR1_TIM3_REMAP ((u32_t)0x00000C00)
+#define AFIO_PCFR1_TIM3_REMAP_0 ((u32_t)0x00000400)
+#define AFIO_PCFR1_TIM3_REMAP_1 ((u32_t)0x00000800)
+#define AFIO_PCFR1_TIM3_REMAP_NOREMAP ((u32_t)0x00000000)
+#define AFIO_PCFR1_TIM3_REMAP_PARTIALREMAP ((u32_t)0x00000800)
+#define AFIO_PCFR1_TIM3_REMAP_FULLREMAP ((u32_t)0x00000C00)
+#define AFIO_PCFR1_TIM4_REMAP ((u32_t)0x00001000)
+#define AFIO_PCFR1_CAN_REMAP ((u32_t)0x00006000)
+#define AFIO_PCFR1_CAN_REMAP_0 ((u32_t)0x00002000)
+#define AFIO_PCFR1_CAN_REMAP_1 ((u32_t)0x00004000)
+#define AFIO_PCFR1_CAN_REMAP_REMAP1 ((u32_t)0x00000000)
+#define AFIO_PCFR1_CAN_REMAP_REMAP2 ((u32_t)0x00004000)
+#define AFIO_PCFR1_CAN_REMAP_REMAP3 ((u32_t)0x00006000)
+#define AFIO_PCFR1_PA12_REMAP ((u32_t)0x00008000)
+#define AFIO_PCFR1_TIM5CH4_IREMAP ((u32_t)0x00010000)
+#define AFIO_PCFR1_ADC1_ETRGINJ_REMAP ((u32_t)0x00020000)
+#define AFIO_PCFR1_ADC1_ETRGREG_REMAP ((u32_t)0x00040000)
+#define AFIO_PCFR1_ADC2_ETRGINJ_REMAP ((u32_t)0x00080000)
+#define AFIO_PCFR1_ADC2_ETRGREG_REMAP ((u32_t)0x00100000)
+#define AFIO_PCFR1_SWJ_CFG ((u32_t)0x07000000)
+#define AFIO_PCFR1_SWJ_CFG_0 ((u32_t)0x01000000)
+#define AFIO_PCFR1_SWJ_CFG_1 ((u32_t)0x02000000)
+#define AFIO_PCFR1_SWJ_CFG_2 ((u32_t)0x04000000)
+#define AFIO_PCFR1_SWJ_CFG_RESET ((u32_t)0x00000000)
+#define AFIO_PCFR1_SWJ_CFG_NOJNTRST ((u32_t)0x01000000)
+#define AFIO_PCFR1_SWJ_CFG_JTAGDISABLE ((u32_t)0x02000000)
+#define AFIO_PCFR1_SWJ_CFG_DISABLE ((u32_t)0x04000000)
+
+#define AFIO_EXTICR1_EXTI0 ((u16_t)0x000F)
+#define AFIO_EXTICR1_EXTI1 ((u16_t)0x00F0)
+#define AFIO_EXTICR1_EXTI2 ((u16_t)0x0F00)
+#define AFIO_EXTICR1_EXTI3 ((u16_t)0xF000)
+#define AFIO_EXTICR1_EXTI0_PA ((u16_t)0x0000)
+#define AFIO_EXTICR1_EXTI0_PB ((u16_t)0x0001)
+#define AFIO_EXTICR1_EXTI0_PC ((u16_t)0x0002)
+#define AFIO_EXTICR1_EXTI0_PD ((u16_t)0x0003)
+#define AFIO_EXTICR1_EXTI0_PE ((u16_t)0x0004)
+#define AFIO_EXTICR1_EXTI0_PF ((u16_t)0x0005)
+#define AFIO_EXTICR1_EXTI0_PG ((u16_t)0x0006)
+#define AFIO_EXTICR1_EXTI1_PA ((u16_t)0x0000)
+#define AFIO_EXTICR1_EXTI1_PB ((u16_t)0x0010)
+#define AFIO_EXTICR1_EXTI1_PC ((u16_t)0x0020)
+#define AFIO_EXTICR1_EXTI1_PD ((u16_t)0x0030)
+#define AFIO_EXTICR1_EXTI1_PE ((u16_t)0x0040)
+#define AFIO_EXTICR1_EXTI1_PF ((u16_t)0x0050)
+#define AFIO_EXTICR1_EXTI1_PG ((u16_t)0x0060)
+#define AFIO_EXTICR1_EXTI2_PA ((u16_t)0x0000)
+#define AFIO_EXTICR1_EXTI2_PB ((u16_t)0x0100)
+#define AFIO_EXTICR1_EXTI2_PC ((u16_t)0x0200)
+#define AFIO_EXTICR1_EXTI2_PD ((u16_t)0x0300)
+#define AFIO_EXTICR1_EXTI2_PE ((u16_t)0x0400)
+#define AFIO_EXTICR1_EXTI2_PF ((u16_t)0x0500)
+#define AFIO_EXTICR1_EXTI2_PG ((u16_t)0x0600)
+#define AFIO_EXTICR1_EXTI3_PA ((u16_t)0x0000)
+#define AFIO_EXTICR1_EXTI3_PB ((u16_t)0x1000)
+#define AFIO_EXTICR1_EXTI3_PC ((u16_t)0x2000)
+#define AFIO_EXTICR1_EXTI3_PD ((u16_t)0x3000)
+#define AFIO_EXTICR1_EXTI3_PE ((u16_t)0x4000)
+#define AFIO_EXTICR1_EXTI3_PF ((u16_t)0x5000)
+#define AFIO_EXTICR1_EXTI3_PG ((u16_t)0x6000)
+
+struct ch32v003_i2c
+{
+    volatile u16_t CTLR1;
+    u16_t RESERVED0;
+    volatile u16_t CTLR2;
+    u16_t RESERVED1;
+    volatile u16_t OADDR1;
+    u16_t RESERVED2;
+    volatile u16_t OADDR2;
+    u16_t RESERVED3;
+    volatile u16_t DATAR;
+    u16_t RESERVED4;
+    volatile u16_t STAR1;
+    u16_t RESERVED5;
+    volatile u16_t STAR2;
+    u16_t RESERVED6;
+    volatile u16_t CKCFGR;
+    u16_t RESERVED7;
+};
+
+#define I2C1 ((struct ch32v003_i2c*)0x40005400)
+
+#define I2C_CTLR1_PE ((u16_t)0x0001)
+#define I2C_CTLR1_SMBUS ((u16_t)0x0002)
+#define I2C_CTLR1_SMBTYPE ((u16_t)0x0008)
+#define I2C_CTLR1_ENARP ((u16_t)0x0010)
+#define I2C_CTLR1_ENPEC ((u16_t)0x0020)
+#define I2C_CTLR1_ENGC ((u16_t)0x0040)
+#define I2C_CTLR1_NOSTRETCH ((u16_t)0x0080)
+#define I2C_CTLR1_START ((u16_t)0x0100)
+#define I2C_CTLR1_STOP ((u16_t)0x0200)
+#define I2C_CTLR1_ACK ((u16_t)0x0400)
+#define I2C_CTLR1_POS ((u16_t)0x0800)
+#define I2C_CTLR1_PEC ((u16_t)0x1000)
+#define I2C_CTLR1_ALERT ((u16_t)0x2000)
+#define I2C_CTLR1_SWRST ((u16_t)0x8000)
+
+#define I2C_CTLR2_FREQ ((u16_t)0x003F)
+#define I2C_CTLR2_FREQ_0 ((u16_t)0x0001)
+#define I2C_CTLR2_FREQ_1 ((u16_t)0x0002)
+#define I2C_CTLR2_FREQ_2 ((u16_t)0x0004)
+#define I2C_CTLR2_FREQ_3 ((u16_t)0x0008)
+#define I2C_CTLR2_FREQ_4 ((u16_t)0x0010)
+#define I2C_CTLR2_FREQ_5 ((u16_t)0x0020)
+
+#define I2C_CTLR2_ITERREN ((u16_t)0x0100)
+#define I2C_CTLR2_ITEVTEN ((u16_t)0x0200)
+#define I2C_CTLR2_ITBUFEN ((u16_t)0x0400)
+#define I2C_CTLR2_DMAEN ((u16_t)0x0800)
+#define I2C_CTLR2_LAST ((u16_t)0x1000)
+
+#define I2C_OADDR1_ADD1_7 ((u16_t)0x00FE)
+#define I2C_OADDR1_ADD8_9 ((u16_t)0x0300)
+#define I2C_OADDR1_ADD0 ((u16_t)0x0001)
+#define I2C_OADDR1_ADD1 ((u16_t)0x0002)
+#define I2C_OADDR1_ADD2 ((u16_t)0x0004)
+#define I2C_OADDR1_ADD3 ((u16_t)0x0008)
+#define I2C_OADDR1_ADD4 ((u16_t)0x0010)
+#define I2C_OADDR1_ADD5 ((u16_t)0x0020)
+#define I2C_OADDR1_ADD6 ((u16_t)0x0040)
+#define I2C_OADDR1_ADD7 ((u16_t)0x0080)
+#define I2C_OADDR1_ADD8 ((u16_t)0x0100)
+#define I2C_OADDR1_ADD9 ((u16_t)0x0200)
+#define I2C_OADDR1_ADDMODE ((u16_t)0x8000)
+
+#define I2C_OADDR2_ENDUAL ((u8_t)0x01)
+#define I2C_OADDR2_ADD2 ((u8_t)0xFE)
+
+#define I2C_DR_DATAR ((u8_t)0xFF)
+
+#define I2C_STAR1_SB ((u16_t)0x0001)
+#define I2C_STAR1_ADDR ((u16_t)0x0002)
+#define I2C_STAR1_BTF ((u16_t)0x0004)
+#define I2C_STAR1_ADD10 ((u16_t)0x0008)
+#define I2C_STAR1_STOPF ((u16_t)0x0010)
+#define I2C_STAR1_RXNE ((u16_t)0x0040)
+#define I2C_STAR1_TXE ((u16_t)0x0080)
+#define I2C_STAR1_BERR ((u16_t)0x0100)
+#define I2C_STAR1_ARLO ((u16_t)0x0200)
+#define I2C_STAR1_AF ((u16_t)0x0400)
+#define I2C_STAR1_OVR ((u16_t)0x0800)
+#define I2C_STAR1_PECERR ((u16_t)0x1000)
+#define I2C_STAR1_TIMEOUT ((u16_t)0x4000)
+#define I2C_STAR1_SMBALERT ((u16_t)0x8000)
+
+#define I2C_STAR2_MSL ((u16_t)0x0001)
+#define I2C_STAR2_BUSY ((u16_t)0x0002)
+#define I2C_STAR2_TRA ((u16_t)0x0004)
+#define I2C_STAR2_GENCALL ((u16_t)0x0010)
+#define I2C_STAR2_SMBDEFAULT ((u16_t)0x0020)
+#define I2C_STAR2_SMBHOST ((u16_t)0x0040)
+#define I2C_STAR2_DUALF ((u16_t)0x0080)
+#define I2C_STAR2_PEC ((u16_t)0xFF00)
+
+#define I2C_CKCFGR_CCR ((u16_t)0x0FFF)
+#define I2C_CKCFGR_DUTY ((u16_t)0x4000)
+#define I2C_CKCFGR_FS ((u16_t)0x8000)
+
+struct ch32v003_iwdg
+{
+    volatile u32_t CTLR;
+    volatile u32_t PSCR;
+    volatile u32_t RLDR;
+    volatile u32_t STATR;
+};
+
+#define IWDG ((struct ch32v003_iwdg*)0x40003000)
+
+#define IWDG_CTLR_KEY ((u16_t)0xFFFF)
+
+#define IWDG_PSCR_PR ((u8_t)0x07)
+#define IWDG_PSCR_PR_0 ((u8_t)0x01)
+#define IWDG_PSCR_PR_1 ((u8_t)0x02)
+#define IWDG_PSCR_PR_2 ((u8_t)0x04)
+
+#define IWDG_RLDR_RL ((u16_t)0x0FFF)
+
+#define IWDG_STATR_PVU ((u8_t)0x01)
+#define IWDG_STATR_RVU ((u8_t)0x02)
+
+struct ch32v003_pwr
+{
+    volatile u32_t CTLR;
+    volatile u32_t CSR;
+    volatile u32_t AWUCSR;
+    volatile u32_t AWUWR;
+    volatile u32_t AWUPSC;
+};
+
+#define PWR ((struct ch32v003_pwr*)0x40007000)
+
+#define PWR_CTLR_LPDS ((u16_t)0x0001)
+#define PWR_CTLR_PDDS ((u16_t)0x0002)
+#define PWR_CTLR_CWUF ((u16_t)0x0004)
+#define PWR_CTLR_CSBF ((u16_t)0x0008)
+#define PWR_CTLR_PVDE ((u16_t)0x0010)
+#define PWR_CTLR_PLS ((u16_t)0x00E0)
+#define PWR_CTLR_PLS_0 ((u16_t)0x0020)
+#define PWR_CTLR_PLS_1 ((u16_t)0x0040)
+#define PWR_CTLR_PLS_2 ((u16_t)0x0080)
+#define PWR_CTLR_PLS_2V2 ((u16_t)0x0000)
+#define PWR_CTLR_PLS_2V3 ((u16_t)0x0020)
+#define PWR_CTLR_PLS_2V4 ((u16_t)0x0040)
+#define PWR_CTLR_PLS_2V5 ((u16_t)0x0060)
+#define PWR_CTLR_PLS_2V6 ((u16_t)0x0080)
+#define PWR_CTLR_PLS_2V7 ((u16_t)0x00A0)
+#define PWR_CTLR_PLS_2V8 ((u16_t)0x00C0)
+#define PWR_CTLR_PLS_2V9 ((u16_t)0x00E0)
+#define PWR_CTLR_DBP ((u16_t)0x0100)
+
+#define PWR_CSR_WUF ((u16_t)0x0001)
+#define PWR_CSR_SBF ((u16_t)0x0002)
+#define PWR_CSR_PVDO ((u16_t)0x0004)
+#define PWR_CSR_EWUP ((u16_t)0x0100)
+
+struct ch32v003_rcc
+{
+    volatile u32_t CTLR;
+    volatile u32_t CFGR0;
+    volatile u32_t INTR;
+    volatile u32_t APB2PRSTR;
+    volatile u32_t APB1PRSTR;
+    volatile u32_t AHBPCENR;
+    volatile u32_t APB2PCENR;
+    volatile u32_t APB1PCENR;
+    volatile u32_t RESERVED0;
+    volatile u32_t RSTSCKR;
+};
+
+#define RCC ((struct ch32v003_rcc*)0x40021000)
+
+#define RCC_CTLR_HSION ((u32_t)0x00000001)
+#define RCC_CTLR_HSIRDY ((u32_t)0x00000002)
+#define RCC_CTLR_HSITRIM ((u32_t)0x000000F8)
+#define RCC_CTLR_HSICAL ((u32_t)0x0000FF00)
+#define RCC_CTLR_HSEON ((u32_t)0x00010000)
+#define RCC_CTLR_HSERDY ((u32_t)0x00020000)
+#define RCC_CTLR_HSEBYP ((u32_t)0x00040000)
+#define RCC_CTLR_CSSON ((u32_t)0x00080000)
+#define RCC_CTLR_PLLON ((u32_t)0x01000000)
+#define RCC_CTLR_PLLRDY ((u32_t)0x02000000)
+
+#define RCC_CFGR0_SW ((u32_t)0x00000003)
+#define RCC_CFGR0_SW_0 ((u32_t)0x00000001)
+#define RCC_CFGR0_SW_1 ((u32_t)0x00000002)
+#define RCC_CFGR0_SW_HSI ((u32_t)0x00000000)
+#define RCC_CFGR0_SW_HSE ((u32_t)0x00000001)
+#define RCC_CFGR0_SW_PLL ((u32_t)0x00000002)
+#define RCC_CFGR0_SWS ((u32_t)0x0000000C)
+#define RCC_CFGR0_SWS_0 ((u32_t)0x00000004)
+#define RCC_CFGR0_SWS_1 ((u32_t)0x00000008)
+#define RCC_CFGR0_SWS_HSI ((u32_t)0x00000000)
+#define RCC_CFGR0_SWS_HSE ((u32_t)0x00000004)
+#define RCC_CFGR0_SWS_PLL ((u32_t)0x00000008)
+#define RCC_CFGR0_HPRE ((u32_t)0x000000F0)
+#define RCC_CFGR0_HPRE_0 ((u32_t)0x00000010)
+#define RCC_CFGR0_HPRE_1 ((u32_t)0x00000020)
+#define RCC_CFGR0_HPRE_2 ((u32_t)0x00000040)
+#define RCC_CFGR0_HPRE_3 ((u32_t)0x00000080)
+#define RCC_CFGR0_HPRE_DIV1 ((u32_t)0x00000000)
+#define RCC_CFGR0_HPRE_DIV2 ((u32_t)0x00000010)
+#define RCC_CFGR0_HPRE_DIV3 ((u32_t)0x00000020)
+#define RCC_CFGR0_HPRE_DIV4 ((u32_t)0x00000030)
+#define RCC_CFGR0_HPRE_DIV5 ((u32_t)0x00000040)
+#define RCC_CFGR0_HPRE_DIV6 ((u32_t)0x00000050)
+#define RCC_CFGR0_HPRE_DIV7 ((u32_t)0x00000060)
+#define RCC_CFGR0_HPRE_DIV8 ((u32_t)0x00000070)
+#define RCC_CFGR0_HPRE_DIV16 ((u32_t)0x000000B0)
+#define RCC_CFGR0_HPRE_DIV32 ((u32_t)0x000000C0)
+#define RCC_CFGR0_HPRE_DIV64 ((u32_t)0x000000D0)
+#define RCC_CFGR0_HPRE_DIV128 ((u32_t)0x000000E0)
+#define RCC_CFGR0_HPRE_DIV256 ((u32_t)0x000000F0)
+#define RCC_CFGR0_PPRE1 ((u32_t)0x00000700)
+#define RCC_CFGR0_PPRE1_0 ((u32_t)0x00000100)
+#define RCC_CFGR0_PPRE1_1 ((u32_t)0x00000200)
+#define RCC_CFGR0_PPRE1_2 ((u32_t)0x00000400)
+#define RCC_CFGR0_PPRE1_DIV1 ((u32_t)0x00000000)
+#define RCC_CFGR0_PPRE1_DIV2 ((u32_t)0x00000400)
+#define RCC_CFGR0_PPRE1_DIV4 ((u32_t)0x00000500)
+#define RCC_CFGR0_PPRE1_DIV8 ((u32_t)0x00000600)
+#define RCC_CFGR0_PPRE1_DIV16 ((u32_t)0x00000700)
+#define RCC_CFGR0_PPRE2 ((u32_t)0x00003800)
+#define RCC_CFGR0_PPRE2_0 ((u32_t)0x00000800)
+#define RCC_CFGR0_PPRE2_1 ((u32_t)0x00001000)
+#define RCC_CFGR0_PPRE2_2 ((u32_t)0x00002000)
+#define RCC_CFGR0_PPRE2_DIV1 ((u32_t)0x00000000)
+#define RCC_CFGR0_PPRE2_DIV2 ((u32_t)0x00002000)
+#define RCC_CFGR0_PPRE2_DIV4 ((u32_t)0x00002800)
+#define RCC_CFGR0_PPRE2_DIV8 ((u32_t)0x00003000)
+#define RCC_CFGR0_PPRE2_DIV16 ((u32_t)0x00003800)
+#define RCC_CFGR0_ADCPRE ((u32_t)0x0000C000)
+#define RCC_CFGR0_ADCPRE_0 ((u32_t)0x00004000)
+#define RCC_CFGR0_ADCPRE_1 ((u32_t)0x00008000)
+#define RCC_CFGR0_ADCPRE_DIV2 ((u32_t)0x00000000)
+#define RCC_CFGR0_ADCPRE_DIV4 ((u32_t)0x00004000)
+#define RCC_CFGR0_ADCPRE_DIV6 ((u32_t)0x00008000)
+#define RCC_CFGR0_ADCPRE_DIV8 ((u32_t)0x0000C000)
+#define RCC_CFGR0_PLLSRC ((u32_t)0x00010000)
+#define RCC_CFGR0_PLLXTPRE ((u32_t)0x00020000)
+#define RCC_CFGR0_PLLMULL ((u32_t)0x003C0000)
+#define RCC_CFGR0_PLLMULL_0 ((u32_t)0x00040000)
+#define RCC_CFGR0_PLLMULL_1 ((u32_t)0x00080000)
+#define RCC_CFGR0_PLLMULL_2 ((u32_t)0x00100000)
+#define RCC_CFGR0_PLLMULL_3 ((u32_t)0x00200000)
+#define RCC_CFGR0_PLLSRC_HSI_Mul2 ((u32_t)0x00000000)
+#define RCC_CFGR0_PLLSRC_HSE_Mul2 ((u32_t)0x00010000)
+#define RCC_CFGR0_PLLXTPRE_HSE ((u32_t)0x00000000)
+#define RCC_CFGR0_PLLXTPRE_HSE_Div2 ((u32_t)0x00020000)
+#define RCC_CFGR0_PLLMULL2 ((u32_t)0x00000000)
+#define RCC_CFGR0_PLLMULL3 ((u32_t)0x00040000)
+#define RCC_CFGR0_PLLMULL4 ((u32_t)0x00080000)
+#define RCC_CFGR0_PLLMULL5 ((u32_t)0x000C0000)
+#define RCC_CFGR0_PLLMULL6 ((u32_t)0x00100000)
+#define RCC_CFGR0_PLLMULL7 ((u32_t)0x00140000)
+#define RCC_CFGR0_PLLMULL8 ((u32_t)0x00180000)
+#define RCC_CFGR0_PLLMULL9 ((u32_t)0x001C0000)
+#define RCC_CFGR0_PLLMULL10 ((u32_t)0x00200000)
+#define RCC_CFGR0_PLLMULL11 ((u32_t)0x00240000)
+#define RCC_CFGR0_PLLMULL12 ((u32_t)0x00280000)
+#define RCC_CFGR0_PLLMULL13 ((u32_t)0x002C0000)
+#define RCC_CFGR0_PLLMULL14 ((u32_t)0x00300000)
+#define RCC_CFGR0_PLLMULL15 ((u32_t)0x00340000)
+#define RCC_CFGR0_PLLMULL16 ((u32_t)0x00380000)
+#define RCC_CFGR0_USBPRE ((u32_t)0x00400000)
+#define RCC_CFGR0_CFGR0_MCO ((u32_t)0x07000000)
+#define RCC_CFGR0_MCO_0 ((u32_t)0x01000000)
+#define RCC_CFGR0_MCO_1 ((u32_t)0x02000000)
+#define RCC_CFGR0_MCO_2 ((u32_t)0x04000000)
+#define RCC_CFGR0_MCO_NOCLOCK ((u32_t)0x00000000)
+#define RCC_CFGR0_MCO_SYSCLK ((u32_t)0x04000000)
+#define RCC_CFGR0_MCO_HSI ((u32_t)0x05000000)
+#define RCC_CFGR0_MCO_HSE ((u32_t)0x06000000)
+#define RCC_CFGR0_MCO_PLL ((u32_t)0x07000000)
+
+#define RCC_INTR_LSIRDYF ((u32_t)0x00000001)
+#define RCC_INTR_LSERDYF ((u32_t)0x00000002)
+#define RCC_INTR_HSIRDYF ((u32_t)0x00000004)
+#define RCC_INTR_HSERDYF ((u32_t)0x00000008)
+#define RCC_INTR_PLLRDYF ((u32_t)0x00000010)
+#define RCC_INTR_CSSF ((u32_t)0x00000080)
+#define RCC_INTR_LSIRDYIE ((u32_t)0x00000100)
+#define RCC_INTR_LSERDYIE ((u32_t)0x00000200)
+#define RCC_INTR_HSIRDYIE ((u32_t)0x00000400)
+#define RCC_INTR_HSERDYIE ((u32_t)0x00000800)
+#define RCC_INTR_PLLRDYIE ((u32_t)0x00001000)
+#define RCC_INTR_LSIRDYC ((u32_t)0x00010000)
+#define RCC_INTR_LSERDYC ((u32_t)0x00020000)
+#define RCC_INTR_HSIRDYC ((u32_t)0x00040000)
+#define RCC_INTR_HSERDYC ((u32_t)0x00080000)
+#define RCC_INTR_PLLRDYC ((u32_t)0x00100000)
+#define RCC_INTR_CSSC ((u32_t)0x00800000)
+
+#define RCC_APB2PRSTR_AFIORST ((u32_t)0x00000001)
+#define RCC_APB2PRSTR_IOPARST ((u32_t)0x00000004)
+#define RCC_APB2PRSTR_IOPBRST ((u32_t)0x00000008)
+#define RCC_APB2PRSTR_IOPCRST ((u32_t)0x00000010)
+#define RCC_APB2PRSTR_IOPDRST ((u32_t)0x00000020)
+#define RCC_APB2PRSTR_ADC1RST ((u32_t)0x00000200)
+#define RCC_APB2PRSTR_ADC2RST ((u32_t)0x00000400)
+#define RCC_APB2PRSTR_TIM1RST ((u32_t)0x00000800)
+#define RCC_APB2PRSTR_SPI1RST ((u32_t)0x00001000)
+#define RCC_APB2PRSTR_USART1RST ((u32_t)0x00004000)
+#define RCC_APB2PRSTR_IOPERST ((u32_t)0x00000040)
+
+#define RCC_APB1PRSTR_TIM2RST ((u32_t)0x00000001)
+#define RCC_APB1PRSTR_TIM3RST ((u32_t)0x00000002)
+#define RCC_APB1PRSTR_WWDGRST ((u32_t)0x00000800)
+#define RCC_APB1PRSTR_USART2RST ((u32_t)0x00020000)
+#define RCC_APB1PRSTR_I2C1RST ((u32_t)0x00200000)
+#define RCC_APB1PRSTR_CAN1RST ((u32_t)0x02000000)
+#define RCC_APB1PRSTR_BKPRST ((u32_t)0x08000000)
+#define RCC_APB1PRSTR_PWRRST ((u32_t)0x10000000)
+#define RCC_APB1PRSTR_TIM4RST ((u32_t)0x00000004)
+#define RCC_APB1PRSTR_SPI2RST ((u32_t)0x00004000)
+#define RCC_APB1PRSTR_USART3RST ((u32_t)0x00040000)
+#define RCC_APB1PRSTR_I2C2RST ((u32_t)0x00400000)
+#define RCC_APB1PRSTR_USBRST ((u32_t)0x00800000)
+
+#define RCC_AHBPCENR_DMA1EN ((u16_t)0x0001)
+#define RCC_AHBPCENR_SRAMEN ((u16_t)0x0004)
+#define RCC_AHBPCENR_FLITFEN ((u16_t)0x0010)
+#define RCC_AHBPCENR_CRCEN ((u16_t)0x0040)
+#define RCC_AHBPCENR_USBHD ((u16_t)0x1000)
+
+#define RCC_APB2PCENR_AFIOEN ((u32_t)0x00000001)
+#define RCC_APB2PCENR_IOPAEN ((u32_t)0x00000004)
+#define RCC_APB2PCENR_IOPBEN ((u32_t)0x00000008)
+#define RCC_APB2PCENR_IOPCEN ((u32_t)0x00000010)
+#define RCC_APB2PCENR_IOPDEN ((u32_t)0x00000020)
+#define RCC_APB2PCENR_ADC1EN ((u32_t)0x00000200)
+#define RCC_APB2PCENR_ADC2EN ((u32_t)0x00000400)
+#define RCC_APB2PCENR_TIM1EN ((u32_t)0x00000800)
+#define RCC_APB2PCENR_SPI1EN ((u32_t)0x00001000)
+#define RCC_APB2PCENR_USART1EN ((u32_t)0x00004000)
+
+#define RCC_APB1PCENR_TIM2EN ((u32_t)0x00000001)
+#define RCC_APB1PCENR_TIM3EN ((u32_t)0x00000002)
+#define RCC_APB1PCENR_WWDGEN ((u32_t)0x00000800)
+#define RCC_APB1PCENR_USART2EN ((u32_t)0x00020000)
+#define RCC_APB1PCENR_I2C1EN ((u32_t)0x00200000)
+#define RCC_APB1PCENR_BKPEN ((u32_t)0x08000000)
+#define RCC_APB1PCENR_PWREN ((u32_t)0x10000000)
+#define RCC_APB1PCENR_USBEN ((u32_t)0x00800000)
+
+#define RCC_RSTSCKR_LSION ((u32_t)0x00000001)
+#define RCC_RSTSCKR_LSIRDY ((u32_t)0x00000002)
+#define RCC_RSTSCKR_RMVF ((u32_t)0x01000000)
+#define RCC_RSTSCKR_PINRSTF ((u32_t)0x04000000)
+#define RCC_RSTSCKR_PORRSTF ((u32_t)0x08000000)
+#define RCC_RSTSCKR_SFTRSTF ((u32_t)0x10000000)
+#define RCC_RSTSCKR_IWDGRSTF ((u32_t)0x20000000)
+#define RCC_RSTSCKR_WWDGRSTF ((u32_t)0x40000000)
+#define RCC_RSTSCKR_LPWRRSTF ((u32_t)0x80000000)
+
+struct ch32v003_spi
+{
+    volatile u16_t CTLR1;
+    u16_t RESERVED0;
+    volatile u16_t CTLR2;
+    u16_t RESERVED1;
+    volatile u16_t STATR;
+    u16_t RESERVED2;
+    volatile u16_t DATAR;
+    u16_t RESERVED3;
+    volatile u16_t CRCR;
+    u16_t RESERVED4;
+    volatile u16_t RCRCR;
+    u16_t RESERVED5;
+    volatile u16_t TCRCR;
+    u16_t RESERVED6;
+    u32_t RESERVED7;
+    u32_t RESERVED8;
+    volatile u16_t HSCR;
+    u16_t RESERVED9;
+};
+
+#define SPI1 ((struct ch32v003_spi*)0x40013000)
+
+#define SPI_CTLR1_CPHA ((u16_t)0x0001)
+#define SPI_CTLR1_CPOL ((u16_t)0x0002)
+#define SPI_CTLR1_MSTR ((u16_t)0x0004)
+#define SPI_CTLR1_BR ((u16_t)0x0038)
+#define SPI_CTLR1_BR_0 ((u16_t)0x0008)
+#define SPI_CTLR1_BR_1 ((u16_t)0x0010)
+#define SPI_CTLR1_BR_2 ((u16_t)0x0020)
+#define SPI_CTLR1_SPE ((u16_t)0x0040)
+#define SPI_CTLR1_SSI ((u16_t)0x0100)
+#define SPI_CTLR1_SSM ((u16_t)0x0200)
+#define SPI_CTLR1_RXONLY ((u16_t)0x0400)
+#define SPI_CTLR1_DFF ((u16_t)0x0800)
+#define SPI_CTLR1_CRCNEXT ((u16_t)0x1000)
+#define SPI_CTLR1_CRCEN ((u16_t)0x2000)
+#define SPI_CTLR1_BIDIOE ((u16_t)0x4000)
+#define SPI_CTLR1_BIDIMODE ((u16_t)0x8000)
+
+#define SPI_CTLR2_RXDMAEN ((u8_t)0x01)
+#define SPI_CTLR2_TXDMAEN ((u8_t)0x02)
+#define SPI_CTLR2_SSOE ((u8_t)0x04)
+#define SPI_CTLR2_ERRIE ((u8_t)0x20)
+#define SPI_CTLR2_RXNEIE ((u8_t)0x40)
+#define SPI_CTLR2_TXEIE ((u8_t)0x80)
+
+#define SPI_STATR_RXNE ((u8_t)0x01)
+#define SPI_STATR_TXE ((u8_t)0x02)
+#define SPI_STATR_CHSIDE ((u8_t)0x04)
+#define SPI_STATR_UDR ((u8_t)0x08)
+#define SPI_STATR_CRCERR ((u8_t)0x10)
+#define SPI_STATR_MODF ((u8_t)0x20)
+#define SPI_STATR_OVR ((u8_t)0x40)
+#define SPI_STATR_BSY ((u8_t)0x80)
+
+#define SPI_DATAR_DR ((u16_t)0xFFFF)
+
+#define SPI_CRCR_CRCPOLY ((u16_t)0xFFFF)
+
+#define SPI_RCRCR_RXCRC ((u16_t)0xFFFF)
+
+#define SPI_TCRCR_TXCRC ((u16_t)0xFFFF)
+
+struct ch32v003_tim
+{
+    volatile u16_t CTLR1;
+    u16_t RESERVED0;
+    volatile u16_t CTLR2;
+    u16_t RESERVED1;
+    volatile u16_t SMCFGR;
+    u16_t RESERVED2;
+    volatile u16_t DMAINTENR;
+    u16_t RESERVED3;
+    volatile u16_t INTFR;
+    u16_t RESERVED4;
+    volatile u16_t SWEVGR;
+    u16_t RESERVED5;
+    volatile u16_t CHCTLR1;
+    u16_t RESERVED6;
+    volatile u16_t CHCTLR2;
+    u16_t RESERVED7;
+    volatile u16_t CCER;
+    u16_t RESERVED8;
+    volatile u16_t CNT;
+    u16_t RESERVED9;
+    volatile u16_t PSC;
+    u16_t RESERVED10;
+    volatile u16_t ATRLR;
+    u16_t RESERVED11;
+    volatile u16_t RPTCR;
+    u16_t RESERVED12;
+    volatile u32_t CH1CVR;
+    volatile u32_t CH2CVR;
+    volatile u32_t CH3CVR;
+    volatile u32_t CH4CVR;
+    volatile u16_t BDTR;
+    u16_t RESERVED13;
+    volatile u16_t DMACFGR;
+    u16_t RESERVED14;
+    volatile u16_t DMAADR;
+    u16_t RESERVED15;
+};
+
+#define TIM1 ((struct ch32v003_tim*)0x40012C00)
+#define TIM2 ((struct ch32v003_tim*)0x40000000)
+
+#define TIM_CTLR1_CEN ((u16_t)0x0001)
+#define TIM_CTLR1_UDIS ((u16_t)0x0002)
+#define TIM_CTLR1_URS ((u16_t)0x0004)
+#define TIM_CTLR1_OPM ((u16_t)0x0008)
+#define TIM_CTLR1_DIR ((u16_t)0x0010)
+#define TIM_CTLR1_CMS ((u16_t)0x0060)
+#define TIM_CTLR1_CMS_0 ((u16_t)0x0020)
+#define TIM_CTLR1_CMS_1 ((u16_t)0x0040)
+#define TIM_CTLR1_ARPE ((u16_t)0x0080)
+#define TIM_CTLR1_CTLR1_CKD ((u16_t)0x0300)
+#define TIM_CTLR1_CKD_0 ((u16_t)0x0100)
+#define TIM_CTLR1_CKD_1 ((u16_t)0x0200)
+
+#define TIM_CTLR2_CCPC ((u16_t)0x0001)
+#define TIM_CTLR2_CCUS ((u16_t)0x0004)
+#define TIM_CTLR2_CCDS ((u16_t)0x0008)
+#define TIM_CTLR2_MMS ((u16_t)0x0070)
+#define TIM_CTLR2_MMS_0 ((u16_t)0x0010)
+#define TIM_CTLR2_MMS_1 ((u16_t)0x0020)
+#define TIM_CTLR2_MMS_2 ((u16_t)0x0040)
+#define TIM_CTLR2_TI1S ((u16_t)0x0080)
+#define TIM_CTLR2_OIS1 ((u16_t)0x0100)
+#define TIM_CTLR2_OIS1N ((u16_t)0x0200)
+#define TIM_CTLR2_OIS2 ((u16_t)0x0400)
+#define TIM_CTLR2_OIS2N ((u16_t)0x0800)
+#define TIM_CTLR2_OIS3 ((u16_t)0x1000)
+#define TIM_CTLR2_OIS3N ((u16_t)0x2000)
+#define TIM_CTLR2_OIS4 ((u16_t)0x4000)
+
+#define TIM_SMCFGR_SMS ((u16_t)0x0007)
+#define TIM_SMCFGR_SMS_0 ((u16_t)0x0001)
+#define TIM_SMCFGR_SMS_1 ((u16_t)0x0002)
+#define TIM_SMCFGR_SMS_2 ((u16_t)0x0004)
+#define TIM_SMCFGR_TS ((u16_t)0x0070)
+#define TIM_SMCFGR_TS_0 ((u16_t)0x0010)
+#define TIM_SMCFGR_TS_1 ((u16_t)0x0020)
+#define TIM_SMCFGR_TS_2 ((u16_t)0x0040)
+#define TIM_SMCFGR_MSM ((u16_t)0x0080)
+#define TIM_SMCFGR_ETF ((u16_t)0x0F00)
+#define TIM_SMCFGR_ETF_0 ((u16_t)0x0100)
+#define TIM_SMCFGR_ETF_1 ((u16_t)0x0200)
+#define TIM_SMCFGR_ETF_2 ((u16_t)0x0400)
+#define TIM_SMCFGR_ETF_3 ((u16_t)0x0800)
+#define TIM_SMCFGR_ETPS ((u16_t)0x3000)
+#define TIM_SMCFGR_ETPS_0 ((u16_t)0x1000)
+#define TIM_SMCFGR_ETPS_1 ((u16_t)0x2000)
+#define TIM_SMCFGR_ECE ((u16_t)0x4000)
+#define TIM_SMCFGR_ETP ((u16_t)0x8000)
+
+#define TIM_DMAINTENR_UIE ((u16_t)0x0001)
+#define TIM_DMAINTENR_CC1IE ((u16_t)0x0002)
+#define TIM_DMAINTENR_CC2IE ((u16_t)0x0004)
+#define TIM_DMAINTENR_CC3IE ((u16_t)0x0008)
+#define TIM_DMAINTENR_CC4IE ((u16_t)0x0010)
+#define TIM_DMAINTENR_COMIE ((u16_t)0x0020)
+#define TIM_DMAINTENR_TIE ((u16_t)0x0040)
+#define TIM_DMAINTENR_BIE ((u16_t)0x0080)
+#define TIM_DMAINTENR_UDE ((u16_t)0x0100)
+#define TIM_DMAINTENR_CC1DE ((u16_t)0x0200)
+#define TIM_DMAINTENR_CC2DE ((u16_t)0x0400)
+#define TIM_DMAINTENR_CC3DE ((u16_t)0x0800)
+#define TIM_DMAINTENR_CC4DE ((u16_t)0x1000)
+#define TIM_DMAINTENR_COMDE ((u16_t)0x2000)
+#define TIM_DMAINTENR_TDE ((u16_t)0x4000)
+
+#define TIM_INTFR_UIF ((u16_t)0x0001)
+#define TIM_INTFR_CC1IF ((u16_t)0x0002)
+#define TIM_INTFR_CC2IF ((u16_t)0x0004)
+#define TIM_INTFR_CC3IF ((u16_t)0x0008)
+#define TIM_INTFR_CC4IF ((u16_t)0x0010)
+#define TIM_INTFR_COMIF ((u16_t)0x0020)
+#define TIM_INTFR_TIF ((u16_t)0x0040)
+#define TIM_INTFR_BIF ((u16_t)0x0080)
+#define TIM_INTFR_CC1OF ((u16_t)0x0200)
+#define TIM_INTFR_CC2OF ((u16_t)0x0400)
+#define TIM_INTFR_CC3OF ((u16_t)0x0800)
+#define TIM_INTFR_CC4OF ((u16_t)0x1000)
+
+#define TIM_SWEVGR_UG ((u8_t)0x01)
+#define TIM_SWEVGR_CC1G ((u8_t)0x02)
+#define TIM_SWEVGR_CC2G ((u8_t)0x04)
+#define TIM_SWEVGR_CC3G ((u8_t)0x08)
+#define TIM_SWEVGR_CC4G ((u8_t)0x10)
+#define TIM_SWEVGR_COMG ((u8_t)0x20)
+#define TIM_SWEVGR_TG ((u8_t)0x40)
+#define TIM_SWEVGR_BG ((u8_t)0x80)
+
+#define TIM_CHCTLR1_CC1S ((u16_t)0x0003)
+#define TIM_CHCTLR1_CC1S_0 ((u16_t)0x0001)
+#define TIM_CHCTLR1_CC1S_1 ((u16_t)0x0002)
+#define TIM_CHCTLR1_OC1FE ((u16_t)0x0004)
+#define TIM_CHCTLR1_OC1PE ((u16_t)0x0008)
+#define TIM_CHCTLR1_OC1M ((u16_t)0x0070)
+#define TIM_CHCTLR1_OC1M_0 ((u16_t)0x0010)
+#define TIM_CHCTLR1_OC1M_1 ((u16_t)0x0020)
+#define TIM_CHCTLR1_OC1M_2 ((u16_t)0x0040)
+#define TIM_CHCTLR1_OC1CE ((u16_t)0x0080)
+#define TIM_CHCTLR1_CC2S ((u16_t)0x0300)
+#define TIM_CHCTLR1_CC2S_0 ((u16_t)0x0100)
+#define TIM_CHCTLR1_CC2S_1 ((u16_t)0x0200)
+#define TIM_CHCTLR1_OC2FE ((u16_t)0x0400)
+#define TIM_CHCTLR1_OC2PE ((u16_t)0x0800)
+#define TIM_CHCTLR1_OC2M ((u16_t)0x7000)
+#define TIM_CHCTLR1_OC2M_0 ((u16_t)0x1000)
+#define TIM_CHCTLR1_OC2M_1 ((u16_t)0x2000)
+#define TIM_CHCTLR1_OC2M_2 ((u16_t)0x4000)
+#define TIM_CHCTLR1_OC2CE ((u16_t)0x8000)
+#define TIM_CHCTLR1_IC1PSC ((u16_t)0x000C)
+#define TIM_CHCTLR1_IC1PSC_0 ((u16_t)0x0004)
+#define TIM_CHCTLR1_IC1PSC_1 ((u16_t)0x0008)
+#define TIM_CHCTLR1_IC1F ((u16_t)0x00F0)
+#define TIM_CHCTLR1_IC1F_0 ((u16_t)0x0010)
+#define TIM_CHCTLR1_IC1F_1 ((u16_t)0x0020)
+#define TIM_CHCTLR1_IC1F_2 ((u16_t)0x0040)
+#define TIM_CHCTLR1_IC1F_3 ((u16_t)0x0080)
+#define TIM_CHCTLR1_IC2PSC ((u16_t)0x0C00)
+#define TIM_CHCTLR1_IC2PSC_0 ((u16_t)0x0400)
+#define TIM_CHCTLR1_IC2PSC_1 ((u16_t)0x0800)
+#define TIM_CHCTLR1_IC2F ((u16_t)0xF000)
+#define TIM_CHCTLR1_IC2F_0 ((u16_t)0x1000)
+#define TIM_CHCTLR1_IC2F_1 ((u16_t)0x2000)
+#define TIM_CHCTLR1_IC2F_2 ((u16_t)0x4000)
+#define TIM_CHCTLR1_IC2F_3 ((u16_t)0x8000)
+
+#define TIM_CHCTLR2_CC3S ((u16_t)0x0003)
+#define TIM_CHCTLR2_CC3S_0 ((u16_t)0x0001)
+#define TIM_CHCTLR2_CC3S_1 ((u16_t)0x0002)
+#define TIM_CHCTLR2_OC3FE ((u16_t)0x0004)
+#define TIM_CHCTLR2_OC3PE ((u16_t)0x0008)
+#define TIM_CHCTLR2_OC3M ((u16_t)0x0070)
+#define TIM_CHCTLR2_OC3M_0 ((u16_t)0x0010)
+#define TIM_CHCTLR2_OC3M_1 ((u16_t)0x0020)
+#define TIM_CHCTLR2_OC3M_2 ((u16_t)0x0040)
+#define TIM_CHCTLR2_OC3CE ((u16_t)0x0080)
+#define TIM_CHCTLR2_CC4S ((u16_t)0x0300)
+#define TIM_CHCTLR2_CC4S_0 ((u16_t)0x0100)
+#define TIM_CHCTLR2_CC4S_1 ((u16_t)0x0200)
+#define TIM_CHCTLR2_OC4FE ((u16_t)0x0400)
+#define TIM_CHCTLR2_OC4PE ((u16_t)0x0800)
+#define TIM_CHCTLR2_OC4M ((u16_t)0x7000)
+#define TIM_CHCTLR2_OC4M_0 ((u16_t)0x1000)
+#define TIM_CHCTLR2_OC4M_1 ((u16_t)0x2000)
+#define TIM_CHCTLR2_OC4M_2 ((u16_t)0x4000)
+#define TIM_CHCTLR2_OC4CE ((u16_t)0x8000)
+#define TIM_CHCTLR2_IC3PSC ((u16_t)0x000C)
+#define TIM_CHCTLR2_IC3PSC_0 ((u16_t)0x0004)
+#define TIM_CHCTLR2_IC3PSC_1 ((u16_t)0x0008)
+#define TIM_CHCTLR2_IC3F ((u16_t)0x00F0)
+#define TIM_CHCTLR2_IC3F_0 ((u16_t)0x0010)
+#define TIM_CHCTLR2_IC3F_1 ((u16_t)0x0020)
+#define TIM_CHCTLR2_IC3F_2 ((u16_t)0x0040)
+#define TIM_CHCTLR2_IC3F_3 ((u16_t)0x0080)
+#define TIM_CHCTLR2_IC4PSC ((u16_t)0x0C00)
+#define TIM_CHCTLR2_IC4PSC_0 ((u16_t)0x0400)
+#define TIM_CHCTLR2_IC4PSC_1 ((u16_t)0x0800)
+#define TIM_CHCTLR2_IC4F ((u16_t)0xF000)
+#define TIM_CHCTLR2_IC4F_0 ((u16_t)0x1000)
+#define TIM_CHCTLR2_IC4F_1 ((u16_t)0x2000)
+#define TIM_CHCTLR2_IC4F_2 ((u16_t)0x4000)
+#define TIM_CHCTLR2_IC4F_3 ((u16_t)0x8000)
+
+#define TIM_CCER_CC1E ((u16_t)0x0001)
+#define TIM_CCER_CC1P ((u16_t)0x0002)
+#define TIM_CCER_CC1NE ((u16_t)0x0004)
+#define TIM_CCER_CC1NP ((u16_t)0x0008)
+#define TIM_CCER_CC2E ((u16_t)0x0010)
+#define TIM_CCER_CC2P ((u16_t)0x0020)
+#define TIM_CCER_CC2NE ((u16_t)0x0040)
+#define TIM_CCER_CC2NP ((u16_t)0x0080)
+#define TIM_CCER_CC3E ((u16_t)0x0100)
+#define TIM_CCER_CC3P ((u16_t)0x0200)
+#define TIM_CCER_CC3NE ((u16_t)0x0400)
+#define TIM_CCER_CC3NP ((u16_t)0x0800)
+#define TIM_CCER_CC4E ((u16_t)0x1000)
+#define TIM_CCER_CC4P ((u16_t)0x2000)
+#define TIM_CCER_CC4NP ((u16_t)0x8000)
+
+#define TIM_CNT_CNT ((u16_t)0xFFFF)
+
+#define TIM_PSC_PSC ((u16_t)0xFFFF)
+
+#define TIM_ATRLR_ARR ((u16_t)0xFFFF)
+
+#define TIM_RPTCR_REP ((u8_t)0xFF)
+
+#define TIM_CH1CVR_CCR1 ((u16_t)0xFFFF)
+
+#define TIM_CH2CVR_CCR2 ((u16_t)0xFFFF)
+
+#define TIM_CH3CVR_CCR3 ((u16_t)0xFFFF)
+
+#define TIM_CH4CVR_CCR4 ((u16_t)0xFFFF)
+
+#define TIM_BDTR_DTG ((u16_t)0x00FF)
+#define TIM_BDTR_DTG_0 ((u16_t)0x0001)
+#define TIM_BDTR_DTG_1 ((u16_t)0x0002)
+#define TIM_BDTR_DTG_2 ((u16_t)0x0004)
+#define TIM_BDTR_DTG_3 ((u16_t)0x0008)
+#define TIM_BDTR_DTG_4 ((u16_t)0x0010)
+#define TIM_BDTR_DTG_5 ((u16_t)0x0020)
+#define TIM_BDTR_DTG_6 ((u16_t)0x0040)
+#define TIM_BDTR_DTG_7 ((u16_t)0x0080)
+#define TIM_BDTR_LOCK ((u16_t)0x0300)
+#define TIM_BDTR_LOCK_0 ((u16_t)0x0100)
+#define TIM_BDTR_LOCK_1 ((u16_t)0x0200)
+#define TIM_BDTR_OSSI ((u16_t)0x0400)
+#define TIM_BDTR_OSSR ((u16_t)0x0800)
+#define TIM_BDTR_BKE ((u16_t)0x1000)
+#define TIM_BDTR_BKP ((u16_t)0x2000)
+#define TIM_BDTR_AOE ((u16_t)0x4000)
+#define TIM_BDTR_MOE ((u16_t)0x8000)
+
+#define TIM_DMACFGR_DBA ((u16_t)0x001F)
+#define TIM_DMACFGR_DBA_0 ((u16_t)0x0001)
+#define TIM_DMACFGR_DBA_1 ((u16_t)0x0002)
+#define TIM_DMACFGR_DBA_2 ((u16_t)0x0004)
+#define TIM_DMACFGR_DBA_3 ((u16_t)0x0008)
+#define TIM_DMACFGR_DBA_4 ((u16_t)0x0010)
+#define TIM_DMACFGR_DBL ((u16_t)0x1F00)
+#define TIM_DMACFGR_DBL_0 ((u16_t)0x0100)
+#define TIM_DMACFGR_DBL_1 ((u16_t)0x0200)
+#define TIM_DMACFGR_DBL_2 ((u16_t)0x0400)
+#define TIM_DMACFGR_DBL_3 ((u16_t)0x0800)
+#define TIM_DMACFGR_DBL_4 ((u16_t)0x1000)
+
+#define TIM_DMAADR_DMAR_DMAB ((u16_t)0xFFFF)
+
+struct ch32v003_usart
+{
+    volatile u16_t STATR;
+    u16_t RESERVED0;
+    volatile u16_t DATAR;
+    u16_t RESERVED1;
+    volatile u16_t BRR;
+    u16_t RESERVED2;
+    volatile u16_t CTLR1;
+    u16_t RESERVED3;
+    volatile u16_t CTLR2;
+    u16_t RESERVED4;
+    volatile u16_t CTLR3;
+    u16_t RESERVED5;
+    volatile u16_t GPR;
+    u16_t RESERVED6;
+};
+
+#define USART1 ((struct ch32v003_usart*)0x40013800)
+
+#define USART_STATR_PE ((u16_t)0x0001)
+#define USART_STATR_FE ((u16_t)0x0002)
+#define USART_STATR_NE ((u16_t)0x0004)
+#define USART_STATR_ORE ((u16_t)0x0008)
+#define USART_STATR_IDLE ((u16_t)0x0010)
+#define USART_STATR_RXNE ((u16_t)0x0020)
+#define USART_STATR_TC ((u16_t)0x0040)
+#define USART_STATR_TXE ((u16_t)0x0080)
+#define USART_STATR_LBD ((u16_t)0x0100)
+#define USART_STATR_CTS ((u16_t)0x0200)
+
+#define USART_DATAR_DR ((u16_t)0x01FF)
+
+#define USART_BRR_DIV_F ((u16_t)0x000F)
+#define USART_BRR_DIV_M ((u16_t)0xFFF0)
+
+#define USART_CTLR1_SBK ((u16_t)0x0001)
+#define USART_CTLR1_RWU ((u16_t)0x0002)
+#define USART_CTLR1_RE ((u16_t)0x0004)
+#define USART_CTLR1_TE ((u16_t)0x0008)
+#define USART_CTLR1_IDLEIE ((u16_t)0x0010)
+#define USART_CTLR1_RXNEIE ((u16_t)0x0020)
+#define USART_CTLR1_TCIE ((u16_t)0x0040)
+#define USART_CTLR1_TXEIE ((u16_t)0x0080)
+#define USART_CTLR1_PEIE ((u16_t)0x0100)
+#define USART_CTLR1_PS ((u16_t)0x0200)
+#define USART_CTLR1_PCE ((u16_t)0x0400)
+#define USART_CTLR1_WAKE ((u16_t)0x0800)
+#define USART_CTLR1_M ((u16_t)0x1000)
+#define USART_CTLR1_UE ((u16_t)0x2000)
+#define USART_CTLR1_OVER8 ((u16_t)0x8000)
+
+#define USART_CTLR2_ADD ((u16_t)0x000F)
+#define USART_CTLR2_LBDL ((u16_t)0x0020)
+#define USART_CTLR2_LBDIE ((u16_t)0x0040)
+#define USART_CTLR2_LBCL ((u16_t)0x0100)
+#define USART_CTLR2_CPHA ((u16_t)0x0200)
+#define USART_CTLR2_CPOL ((u16_t)0x0400)
+#define USART_CTLR2_CLKEN ((u16_t)0x0800)
+#define USART_CTLR2_STOP ((u16_t)0x3000)
+#define USART_CTLR2_STOP_0 ((u16_t)0x1000)
+#define USART_CTLR2_STOP_1 ((u16_t)0x2000)
+#define USART_CTLR2_LINEN ((u16_t)0x4000)
+
+#define USART_CTLR3_EIE ((u16_t)0x0001)
+#define USART_CTLR3_IREN ((u16_t)0x0002)
+#define USART_CTLR3_IRLP ((u16_t)0x0004)
+#define USART_CTLR3_HDSEL ((u16_t)0x0008)
+#define USART_CTLR3_NACK ((u16_t)0x0010)
+#define USART_CTLR3_SCEN ((u16_t)0x0020)
+#define USART_CTLR3_DMAR ((u16_t)0x0040)
+#define USART_CTLR3_DMAT ((u16_t)0x0080)
+#define USART_CTLR3_RTSE ((u16_t)0x0100)
+#define USART_CTLR3_CTSE ((u16_t)0x0200)
+#define USART_CTLR3_CTSIE ((u16_t)0x0400)
+#define USART_CTLR3_ONEBIT ((u16_t)0x0800)
+
+#define USART_GPR_PSC ((u16_t)0x00FF)
+#define USART_GPR_PSC_0 ((u16_t)0x0001)
+#define USART_GPR_PSC_1 ((u16_t)0x0002)
+#define USART_GPR_PSC_2 ((u16_t)0x0004)
+#define USART_GPR_PSC_3 ((u16_t)0x0008)
+#define USART_GPR_PSC_4 ((u16_t)0x0010)
+#define USART_GPR_PSC_5 ((u16_t)0x0020)
+#define USART_GPR_PSC_6 ((u16_t)0x0040)
+#define USART_GPR_PSC_7 ((u16_t)0x0080)
+
+#define USART_GPR_GT ((u16_t)0xFF00)
+
+struct ch32v003_wwdg
+{
+    volatile u32_t CTLR;
+    volatile u32_t CFGR;
+    volatile u32_t STATR;
+};
+
+#define WWDG ((struct ch32v003_wwdg*)0x40002C00)
+
+#define WWDG_CTLR_T ((u8_t)0x7F)
+#define WWDG_CTLR_T0 ((u8_t)0x01)
+#define WWDG_CTLR_T1 ((u8_t)0x02)
+#define WWDG_CTLR_T2 ((u8_t)0x04)
+#define WWDG_CTLR_T3 ((u8_t)0x08)
+#define WWDG_CTLR_T4 ((u8_t)0x10)
+#define WWDG_CTLR_T5 ((u8_t)0x20)
+#define WWDG_CTLR_T6 ((u8_t)0x40)
+#define WWDG_CTLR_WDGA ((u8_t)0x80)
+
+#define WWDG_CFGR_W ((u16_t)0x007F)
+#define WWDG_CFGR_W0 ((u16_t)0x0001)
+#define WWDG_CFGR_W1 ((u16_t)0x0002)
+#define WWDG_CFGR_W2 ((u16_t)0x0004)
+#define WWDG_CFGR_W3 ((u16_t)0x0008)
+#define WWDG_CFGR_W4 ((u16_t)0x0010)
+#define WWDG_CFGR_W5 ((u16_t)0x0020)
+#define WWDG_CFGR_W6 ((u16_t)0x0040)
+#define WWDG_CFGR_WDGTB ((u16_t)0x0180)
+#define WWDG_CFGR_WDGTB0 ((u16_t)0x0080)
+#define WWDG_CFGR_WDGTB1 ((u16_t)0x0100)
+#define WWDG_CFGR_EWI ((u16_t)0x0200)
+
+#define WWDG_STATR_EWIF ((u8_t)0x01)
+
+struct ch32v003_exten
+{
+    volatile u32_t CTR;
+};
+
+#define EXTEN ((struct ch32v003_exten*)0x40023800)
+
+#define EXTEN_CTR_LOCKUP_EN ((u32_t)0x00000040)
+#define EXTEN_CTR_LOCKUP_RSTF ((u32_t)0x00000080)
+#define EXTEN_CTR_LDO_TRIM ((u32_t)0x00000400)
+#define EXTEN_CTR_OPA_EN ((u32_t)0x00010000)
+#define EXTEN_CTR_OPA_NSEL ((u32_t)0x00020000)
+#define EXTEN_CTR_OPA_PSEL ((u32_t)0x00040000)
+
+struct ch32v003_esig
+{
+    volatile u32_t FLACAP;
+    u32_t RESERVED;
+    volatile u32_t UNIID1;
+    volatile u32_t UNIID2;
+    volatile u32_t UNIID3;
+};
+
+#define ESIG ((struct ch32v003_esig*)0x1FFFF7E0)
+
+#define ESIG_FLACAP_FSIZE ((u32_t)0x0000FFFF)
+
+#define ESIG_FUNIID1_UID ((u32_t)0xFFFFFFFF)
+
+#define ESIG_FUNIID2_UID ((u32_t)0xFFFFFFFF)
+
+#define ESIG_FUNIID3_UID ((u32_t)0xFFFFFFFF)
+
+#endif
